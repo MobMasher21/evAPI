@@ -4,7 +4,7 @@ namespace evAPI
 {
   //======================================== private =============================================
   /****** encoders ******/
-  double drive::getLeftPosition(rotationUnits units) {    //get the position of the left side on motor or rotation sensor
+  double Drive::getLeftPosition(rotationUnits units) {    //get the position of the left side on motor or rotation sensor
     if(!leftEncoder) {
       return(leftMotor1->position(units));
     } else {
@@ -12,7 +12,7 @@ namespace evAPI
     }
   }
 
-  double drive::getRightPosition(rotationUnits units) {    //get the position of the right side on motor or rotation sensor
+  double Drive::getRightPosition(rotationUnits units) {    //get the position of the right side on motor or rotation sensor
     if(!rightEncoder) {
       return(rightMotor1->position(units));
     } else {
@@ -20,7 +20,7 @@ namespace evAPI
     }
   }
 
-  double drive::getBackPosition(rotationUnits units) {    //get the position of the back side on motor or rotation sensor
+  double Drive::getBackPosition(rotationUnits units) {    //get the position of the back side on motor or rotation sensor
     if(backEncoder) {
       return(backEncoder->position(units));
     } else {
@@ -28,7 +28,7 @@ namespace evAPI
     }
   }
 
-  void drive::resetLeftPosition() {    //resets position of left encoder to 0
+  void Drive::resetLeftPosition() {    //resets position of left encoder to 0
     if(!leftEncoder) {
       leftMotor1->resetPosition();
     } else {
@@ -36,7 +36,7 @@ namespace evAPI
     }
   }
 
-  void drive::resetRightPosition() {    //resets position of right encoder to 0
+  void Drive::resetRightPosition() {    //resets position of right encoder to 0
     if(!leftEncoder) {
       leftMotor1->resetPosition();
     } else {
@@ -44,7 +44,7 @@ namespace evAPI
     }
   }
 
-  void drive::resetBackPosition() {    //resets position of back encoder to 0
+  void Drive::resetBackPosition() {    //resets position of back encoder to 0
     if(backEncoder) {
       backEncoder->resetPosition();
     }

@@ -18,7 +18,7 @@ namespace evAPI
   class goodUI {
 
     private:
-      //!General Private
+      //*General Private
       bool debugMode = false;
       thread * brainThread;
       thread * controllerThread;
@@ -32,7 +32,7 @@ namespace evAPI
         TEXT = 4
       };
 
-      //!Auto Select UI Private
+      //*Auto Select UI Private
       int buttonCount;
       button * buttonList[maxButtonCount];
       button * pageBack;
@@ -52,7 +52,7 @@ namespace evAPI
 
       int displayTime = 1500;
 
-      //!Match UI Private
+      //*Match UI Private
 
       int activeMatchPage = 0;
 
@@ -82,7 +82,7 @@ namespace evAPI
 
       color defaultReadoutColor = blue;
 
-      //!Controller UI Private
+      //*Controller UI Private
 
       struct controllerReadOut
       {
@@ -100,7 +100,7 @@ namespace evAPI
       int controllerOutCount = 0; //Number of displayed outputs on controllers.
   
     public:
-      //!General
+      //*General
 
       /**
        * @brief Sets if debugging is enabled.
@@ -123,10 +123,10 @@ namespace evAPI
       void renderRobotPosition(); //!Reserved for thread. DO NOT USE!
       void printArrowButtons(); //!Reserved for thread. DO NOT USE!
 
-      //!Auto Select UI
+      //*Auto Select UI
       goodUI();
 
-      //!New code
+      //*New code
 
       void addButtonCore(int id); //!Make private upon completion of refactor
 
@@ -222,7 +222,7 @@ namespace evAPI
       */
       iconArrays Icons;
       
-      //!Match UI
+      //*Match UI
 
       /**
        * @brief Draws the match UI to the screen.
@@ -254,7 +254,7 @@ namespace evAPI
       */
       void setTileColor(uint8_t tileID, int tileColor);
 
-      //!Read Out Setup
+      //*Read Out Setup
 
       bool createBlankBrainReadOut();
 
@@ -322,7 +322,7 @@ namespace evAPI
       */
       bool createBrainReadOut(const char name[MAX_BRAIN_NAME_LENGTH], double &data, color Color);
 
-      //!Controller UI
+      //*Controller UI
 
       /**
        * @brief Draws the match UI to the screen.
@@ -359,7 +359,6 @@ namespace evAPI
       bool createControllerReadOut(const char name[MAX_BRAIN_NAME_LENGTH], double &data);
   };
 
-  extern goodUI UI;
 }
 
 #endif // __USERINTERFACE_H__

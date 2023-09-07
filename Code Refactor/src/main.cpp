@@ -16,21 +16,9 @@
 
 using namespace evAPI;
 
-intake Intake; //Setup code objects
-flywheel Flywheel;
-drive driveBase;
+Drive driveBase; //Setup code objects
 competition Competition;
-
-//Custom type to store the mode of the flywheel.
-enum class flywheelMode 
-{
-  flywheelDisabled,
-  flywheelShooting,
-  flywheelIntaking
-};
-flywheelMode flywheelShootingMode = flywheelMode::flywheelShooting;
-
-bool hasTriball = false;
+goodUI UI;
 
 int batteryCapacity = 0; //Variables that store info about the battery
 double batteryVolt = 0;
@@ -72,24 +60,12 @@ void pre_auton(void) {
   driveBase.rightPortSetup(9, 20);
   driveBase.leftReverseSetup(true, true);
   driveBase.rightReverseSetup(false, false);
-  driveBase.setBaseType(HDriveStandard);
-  driveBase.setControlType(RCControl, leftStick);
   driveBase.setGeneralHandicap(0.9);
   driveBase.setTurningHandicap(0.6);
 
   /* driveBase.leftEncoderSetup(1, 2.75, false);
   driveBase.rightEncoderSetup(2, 2.75, false);
   driveBase.backEncoderSetup(6, 2.75, false); */
-
-  //Setup Flywheel
-  Flywheel.flywheelSetup(2, 3, false, true);
-  Flywheel.setMaxTorque(100, percent);
-  Flywheel.setVelocity(100, percent);
-
-  //Setup Intake
-  Intake.intakeSetup(6, 7, false, true);
-  Intake.setMaxTorque(100, percent);
-  Intake.setVelocity(45, percent);
 
   //Setup Preauto UI
   UI.setDebugMode(false);
@@ -150,35 +126,7 @@ void pre_auton(void) {
 /*---------------------------------------------------------------------------*/
 
 void autonomous(void) {
-  switch(UI.getProgNumber())
-  {
-    case 0: //Blue Scoring
-      
-      break;
-
-    case 1: //Blue Away
-      
-      break;
-
-    case 4: //Red Scoring
-      
-      break;
-    
-    case 5: //Red Away
-
-      break;
-
-    case 7: //Skills 1
-    
-      //Put the arm down to make contact with the match load zone
-      TriballArmDown();
-      
-      //Activate flywheel and intake for shooting.
-      Flywheel.spin(fwd, 90, percent);
-      Intake.spin(fwd, 100, percent);
-
-      break;
-  }
+  
 }
 
 /*---------------------------------------------------------------------------*/
@@ -192,91 +140,10 @@ void autonomous(void) {
 /*---------------------------------------------------------------------------*/
 
 void usercontrol(void) {
-  bool intakeOverride = false;
-  TriballArmUp();
-
-  while(1) {
-    if(!primaryController.ButtonA.pressing()) //Base controls
-    { driveBase.controllerDrive(); }
-
-    else
-    { driveBase.stopRobot(hold); }
-
-    if(triballSensor.objectDistance(mm) <= 140) //Detects if the robot has a triball in the intake.
-    { hasTriball = true; }
-
-    else
-    { hasTriball = false; }
-
-    if(primaryController.ButtonR1.pressing() || primaryController.ButtonR2.pressing())
-    { intakeOverride = true; }
-
-    else
-    { intakeOverride = false; }
-
-    if(primaryController.ButtonL1.pressing()) //Controls the flywheel mode
-    { flywheelShootingMode = flywheelMode::flywheelShooting; }
-
-    else if(primaryController.ButtonL2.pressing())
-    { flywheelShootingMode = flywheelMode::flywheelIntaking; }
-
-    //If the flywheel is configured to shoot triballs.
-    if(flywheelShootingMode == flywheelMode::flywheelShooting) 
-    {
-      if(!intakeOverride) //Standard operation with no user input
-      {
-        if(!hasTriball)
-        { Intake.spin(fwd, 45, percent); }
-
-        else
-        { Intake.stop(); }
-      }
-
-      else //Controls over override
-      {
-        if(primaryController.ButtonR1.pressing())
-        { Intake.spin(fwd, 100, percent); }
-
-        else if(primaryController.ButtonR2.pressing())
-        { Intake.spin(reverse, 100, percent); }
-      }
-
-      Flywheel.spin(fwd, 90, percent);
-    }
-
-    else //If the flywheel is configured to intake triballs.
-    {
-      if(!intakeOverride) //Standard operation with no user input
-      {
-        if(!hasTriball)
-        { Intake.spin(reverse, 75, percent); }
-
-        else
-        { Intake.stop(); }
-      }
-
-      else //Controls over override
-      {
-        if(primaryController.ButtonR1.pressing())
-        { Intake.spin(fwd, 80, percent); }
-
-        else if(primaryController.ButtonR2.pressing())
-        { Intake.spin(reverse, 100, percent); }
-      }
-
-      Flywheel.spin(reverse, 45, percent);
-    }
-
-    if(primaryController.ButtonUp.pressing())
-    { TriballArmUp(); }
-
-    else if(primaryController.ButtonDown.pressing())
-    { TriballArmDown(); }
 
     //=================================================================================
     vex::task::sleep(20); // Sleep the task for a short amount of time to
                           // prevent wasted resources.
-  }
 }
 
 //
