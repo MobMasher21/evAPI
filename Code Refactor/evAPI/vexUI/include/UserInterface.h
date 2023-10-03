@@ -49,6 +49,7 @@ namespace evAPI
       void addButton(void (*callback)(int));
       void pressed();
       void displayButtonName();
+      void addButtonCore(int id);
 
       int displayTime = 1500;
 
@@ -104,6 +105,7 @@ namespace evAPI
 
       /**
        * @brief Sets if debugging is enabled.
+       * 
        * @param mode A boolean controlling debug mode.
       */
       void setDebugMode(bool mode);
@@ -128,10 +130,11 @@ namespace evAPI
 
       //*New code
 
-      void addButtonCore(int id); //!Make private upon completion of refactor
-
       /**
        * @brief Creates a new button with an ID and a color.
+       * 
+       * @return int Returns the current button count
+       * 
        * @param id The ID of the new button.
        * @param r The red value for the color of the button.
        * @param g The green value for the color of the button.
@@ -142,6 +145,9 @@ namespace evAPI
 
       /**
        * @brief Creates a new button with an ID and a color.
+       * 
+       * @return int Returns the current button count
+       * 
        * @param id The ID of the new button.
        * @param buttonColor A color object that contains the color of the button.
        * 
@@ -150,6 +156,9 @@ namespace evAPI
 
       /**
        * @brief Creates a new button with an ID and a color.
+       * 
+       * @return int Returns the current button count
+       * 
        * @param id The ID of the new button.
        * @param alliance The alliance the robot will be part of when this button is selected.
        * It's color will match that of the alliance, with no alliance producing a grey button.
@@ -158,14 +167,15 @@ namespace evAPI
       
       /**
        * @brief Adds an icon to the button.
+       * 
        * @param id The ID of the button.
        * @param iconInput A 35 by 35 array, with each value being treated as the value of a pixel.
       */
       bool addIcon(int id, bool iconInput[35][35]);
-      bool addIcon(int id, color iconInput[35][35]);
 
       /**
        * @brief Adds a function to be called when the button is pressed.
+       * 
        * @param id The ID of the button.
        * @param callback The function to be run.
       */
@@ -174,6 +184,7 @@ namespace evAPI
       /**
        * @brief Adds a title to be displayed when the button is pressed.
        * The length it is displayed for is controlled by setDisplayTime.
+       * 
        * @param id The ID of the button.
        * @param Title An array of characters that contains the title.
       */
@@ -182,14 +193,17 @@ namespace evAPI
       /**
        * @brief Adds a description to be displayed when the button is pressed.
        * The length it is displayed for is controlled by setDisplayTime.
+       * 
        * @param id The ID of the button.
        * @param Title An array of characters that contains the description.
+       * 
        * @returns False if it successfully adds the data.
       */
       bool addDescription(int id, const char Description[MAX_DESCRIPTION_LENGTH]);
 
       /**
        * @brief Maps a button to a specific alliance. This will not change the color of the button.
+       * 
        * @param id The ID of the button.
        * @param alliance The alliance the robot will be part of when this button is selected.
       */
@@ -198,14 +212,40 @@ namespace evAPI
 
       uint largestID = 0;
 
-
+      /**
+       * @brief Adds a blank button to the next UI space. Requited to fill all blank spaces
+       * 
+       * @return int returns the new button count after adding blank
+       */
       int addBlank();
+
+      /**
+       * @brief Allows you to chagne the color of a button
+       * 
+       * @param button The ID of the button you want to change
+       * @param r The r value of the color 0-255
+       * @param g The g value of the color 0-255
+       * @param b The b value of the color 0-255
+       */
       void changeButtonColor(int button, int r, int g, int b);
+
+      /**
+       * @brief Get the Button Count object
+       * 
+       * @return int Returns how many buttons there are
+       */
       int getButtonCount();
+
+      /**
+       * @brief Get the selected program
+       * 
+       * @return int Returns the selected progam
+       */
       int getProgNumber();
 
       /**
        * @brief Changes the selected button.
+       * 
        * @param button The button that will be selected.
        * @param doNotShowSettings Optional. Allows the user to change the program showing the name on the screen.
       */
@@ -213,6 +253,7 @@ namespace evAPI
 
       /**
        * @brief Sets the time the text will be displayed on the Brain.
+       * 
        * @param time The time in ms.
       */
       void setDisplayTime(int time);
@@ -234,12 +275,14 @@ namespace evAPI
       /**
        * @brief Creates the field display. NOTE: USING THIS WILL REMOVE 4 SLOTS FOR GRAPHS ON THE
        *  BRAIN SCREEN.
+       * 
        * @param side Which side of the brain's screen the field will be displayed on.
       */
       void createFieldDisplay(turnType side);
 
       /**
-       * @param Sets a tile's color on the field display.
+       * @brief Sets a tile's color on the field display.
+       * 
        * @param tileID The numerical ID of the tile. Ranges from 0-35, with 0 being the top left,
        * and 35 being the bottom right. The value goes up by one for each tile to he right.
        * @param tileColor The color the tile will be set too.
@@ -247,7 +290,8 @@ namespace evAPI
       void setTileColor(uint8_t tileID, color tileColor);
 
       /**
-       * @param Sets a tile's color on the field display.
+       * @brief Sets a tile's color on the field display.
+       * 
        * @param tileID The numerical ID of the tile. Ranges from 0-35, with 0 being the top left,
        * and 35 being the bottom right. The value goes up by one for each tile to he right.
        * @param tileColor The color the tile will be set too.
@@ -260,18 +304,21 @@ namespace evAPI
 
       /**
        * @brief Sets the default color of the readouts on the Brain during the match.
+       * 
        * @param Color The color of the readouts.
       */
       void setDefaultReadOutColor(color Color);
 
       /**
        * @brief Creates text to display on the Brain.
+       * 
        * @param name An array of characters containing the name of the data.
       */
       bool createBrainReadOut(const char name[MAX_BRAIN_NAME_LENGTH]);
 
       /**
        * @brief Creates text to display on the Brain.
+       * 
        * @param name An array of characters containing the name of the data.
        * @param Color Optional. The color of the data displayed.
       */
@@ -279,48 +326,54 @@ namespace evAPI
 
       /**
        * @brief Creates a new variable display on the Brain.
+       * 
        * @param name An array of characters containing the name of the data.
-       * @param &data A variable to display.
+       * @param data A variable to display.
       */
-      bool createBrainReadOut(const char name[MAX_BRAIN_NAME_LENGTH], int &data);
+      bool createBrainReadOut(const char name[MAX_BRAIN_NAME_LENGTH], int & data);
 
       /**
        * @brief Creates a new variable display on the Brain.
+       * 
        * @param name An array of characters containing the name of the data.
-       * @param &data A variable to display.
+       * @param data A variable to display.
        * @param Color Optional. The color of the data displayed.
       */
-      bool createBrainReadOut(const char name[MAX_BRAIN_NAME_LENGTH], int &data, color Color);
+      bool createBrainReadOut(const char name[MAX_BRAIN_NAME_LENGTH], int & data, color Color);
 
       /**
        * @brief Creates a new variable display on the Brain.
+       * 
        * @param name An array of characters containing the name of the data.
-       * @param &data A variable to display.
+       * @param data A variable to display.
       */
-      bool createBrainReadOut(const char name[MAX_BRAIN_NAME_LENGTH], float &data);
+      bool createBrainReadOut(const char name[MAX_BRAIN_NAME_LENGTH], float & data);
 
       /**
        * @brief Creates a new variable display on the Brain.
+       * 
        * @param name An array of characters containing the name of the data.
-       * @param &data A variable to display.
+       * @param data A variable to display.
        * @param Color Optional. The color of the data displayed.
       */
-      bool createBrainReadOut(const char name[MAX_BRAIN_NAME_LENGTH], float &data, color Color);
+      bool createBrainReadOut(const char name[MAX_BRAIN_NAME_LENGTH], float & data, color Color);
 
       /**
        * @brief Creates a new variable display on the Brain.
+       * 
        * @param name An array of characters containing the name of the data.
-       * @param &data A variable to display.
+       * @param data A variable to display.
       */
-      bool createBrainReadOut(const char name[MAX_BRAIN_NAME_LENGTH], double &data);
+      bool createBrainReadOut(const char name[MAX_BRAIN_NAME_LENGTH], double & data);
 
       /**
        * @brief Creates a new variable display on the Brain.
+       * 
        * @param name An array of characters containing the name of the data.
-       * @param &data A variable to display.
+       * @param data A variable to display.
        * @param Color Optional. The color of the data displayed.
       */
-      bool createBrainReadOut(const char name[MAX_BRAIN_NAME_LENGTH], double &data, color Color);
+      bool createBrainReadOut(const char name[MAX_BRAIN_NAME_LENGTH], double & data, color Color);
 
       //*Controller UI
 
@@ -333,30 +386,34 @@ namespace evAPI
 
       /**
        * @brief Creates text to display on the Controllers.
+       * 
        * @param name An array of characters containing the name of the data.
       */
       bool createControllerReadOut(const char name[MAX_BRAIN_NAME_LENGTH]);
 
       /**
        * @brief Creates a new variable display on the Controllers.
+       * 
        * @param name An array of characters containing the name of the data.
-       * @param &data A variable to display.
+       * @param data A variable to display.
       */
-      bool createControllerReadOut(const char name[MAX_BRAIN_NAME_LENGTH], int &data);
+      bool createControllerReadOut(const char name[MAX_BRAIN_NAME_LENGTH], int & data);
 
       /**
        * @brief Creates a new variable display on the Controllers.
+       * 
        * @param name An array of characters containing the name of the data.
-       * @param &data A variable to display.
+       * @param data A variable to display.
       */
-      bool createControllerReadOut(const char name[MAX_BRAIN_NAME_LENGTH], float &data);
+      bool createControllerReadOut(const char name[MAX_BRAIN_NAME_LENGTH], float & data);
 
       /**
        * @brief Creates a new variable display on the Controllers.
+       * 
        * @param name An array of characters containing the name of the data.
-       * @param &data A variable to display.
+       * @param data A variable to display.
       */
-      bool createControllerReadOut(const char name[MAX_BRAIN_NAME_LENGTH], double &data);
+      bool createControllerReadOut(const char name[MAX_BRAIN_NAME_LENGTH], double & data);
   };
 
 }

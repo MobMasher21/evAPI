@@ -165,7 +165,7 @@ namespace evAPI
     }
 
     if(id > buttonCount)
-    { buttonCount = id; }
+    { buttonCount = id + 1; }
 
     else
     { buttonCount++; }
@@ -216,16 +216,6 @@ namespace evAPI
 
     buttonList[id]->setIconArray(iconInput);
     return false;
-  }
-
-  bool goodUI::addIcon(int id, color iconInput[35][35]) //!TODO: Fix function
-  {
-    /* if(buttonList[id] == nullptr) //Returns true if the button doesn't exist.
-    { return true; }
-
-    buttonList[id]->setIconArray(iconInput);
-    return false; */
-    return true;
   }
 
   bool goodUI::addCallbackFunc(int id, void (*callback)(int))
@@ -797,16 +787,16 @@ namespace evAPI
     return 0;
   }
 
-  bool goodUI::createBrainReadOut(const char name[MAX_BRAIN_NAME_LENGTH], int &data)
+  bool goodUI::createBrainReadOut(const char name[MAX_BRAIN_NAME_LENGTH], int & data)
   { return createBrainReadOut(name, data, defaultReadoutColor); }
 
-  bool goodUI::createBrainReadOut(const char name[MAX_BRAIN_NAME_LENGTH], int &data, color Color)
+  bool goodUI::createBrainReadOut(const char name[MAX_BRAIN_NAME_LENGTH], int & data, color Color)
   {
     if(brainOutCount >= MAX_BRAIN_GRAPH_COUNT) //Stops if the maximum amount of data points has been reached.
     { return 1; }
 
     brainObjects[brainOutCount].graphDataType = INT;
-    brainObjects[brainOutCount].intData = &data;
+    brainObjects[brainOutCount].intData = & data;
     brainObjects[brainOutCount].graphColor = Color;
     brainObjects[brainOutCount].nameLength = strlen(name);
     
@@ -817,16 +807,16 @@ namespace evAPI
     return 0;
   }
 
-  bool goodUI::createBrainReadOut(const char name[MAX_BRAIN_NAME_LENGTH], float &data)
+  bool goodUI::createBrainReadOut(const char name[MAX_BRAIN_NAME_LENGTH], float & data)
   { return createBrainReadOut(name, data, defaultReadoutColor); }
 
-  bool goodUI::createBrainReadOut(const char name[MAX_BRAIN_NAME_LENGTH], float &data, color Color)
+  bool goodUI::createBrainReadOut(const char name[MAX_BRAIN_NAME_LENGTH], float & data, color Color)
   {
     if(brainOutCount >= MAX_BRAIN_GRAPH_COUNT) //Stops if the maximum amount of data points has been reached.
     { return 1; }
 
     brainObjects[brainOutCount].graphDataType = FLOAT;
-    brainObjects[brainOutCount].floatData = &data;
+    brainObjects[brainOutCount].floatData = & data;
     brainObjects[brainOutCount].graphColor = Color;
     brainObjects[brainOutCount].nameLength = strlen(name);
     
@@ -837,16 +827,16 @@ namespace evAPI
     return 0;
   }
 
-  bool goodUI::createBrainReadOut(const char name[MAX_BRAIN_NAME_LENGTH], double &data)
+  bool goodUI::createBrainReadOut(const char name[MAX_BRAIN_NAME_LENGTH], double & data)
   { return createBrainReadOut(name, data, defaultReadoutColor); }
 
-  bool goodUI::createBrainReadOut(const char name[MAX_BRAIN_NAME_LENGTH], double &data, color Color)
+  bool goodUI::createBrainReadOut(const char name[MAX_BRAIN_NAME_LENGTH], double & data, color Color)
   {
     if(brainOutCount >= MAX_BRAIN_GRAPH_COUNT) //Stops if the maximum amount of data points has been reached.
     { return 1; }
 
     brainObjects[brainOutCount].graphDataType = DOUBLE;
-    brainObjects[brainOutCount].doubleData = &data;
+    brainObjects[brainOutCount].doubleData = & data;
     brainObjects[brainOutCount].graphColor = Color;
     brainObjects[brainOutCount].nameLength = strlen(name);
     
@@ -1067,14 +1057,14 @@ namespace evAPI
     return 0;
   }
 
-  bool goodUI::createControllerReadOut(const char name[MAX_BRAIN_NAME_LENGTH], int &data)
+  bool goodUI::createControllerReadOut(const char name[MAX_BRAIN_NAME_LENGTH], int & data)
   {
     //Stops if the maximum amount of data points has been reached.
     if(controllerOutCount >= MAX_CONTROLLER_GRAPH_COUNT) 
     { return 1; }
 
     controllerObjects[controllerOutCount].graphDataType = INT;
-    controllerObjects[controllerOutCount].intData = &data;
+    controllerObjects[controllerOutCount].intData = & data;
     controllerObjects[controllerOutCount].nameLength = strlen(name);
     
     for (uint8_t i = 0; i < strlen(name); i++) //Stores the name.
@@ -1084,14 +1074,14 @@ namespace evAPI
     return 0;
   }
 
-  bool goodUI::createControllerReadOut(const char name[MAX_BRAIN_NAME_LENGTH], float &data)
+  bool goodUI::createControllerReadOut(const char name[MAX_BRAIN_NAME_LENGTH], float & data)
   {
     //Stops if the maximum amount of data points has been reached.
     if(controllerOutCount >= MAX_CONTROLLER_GRAPH_COUNT) 
     { return 1; }
 
     controllerObjects[controllerOutCount].graphDataType = FLOAT;
-    controllerObjects[controllerOutCount].floatData = &data;
+    controllerObjects[controllerOutCount].floatData = & data;
     controllerObjects[controllerOutCount].nameLength = strlen(name);
     
     for (uint8_t i = 0; i < strlen(name); i++) //Stores the name.
@@ -1101,14 +1091,14 @@ namespace evAPI
     return 0;
   }
 
-  bool goodUI::createControllerReadOut(const char name[MAX_BRAIN_NAME_LENGTH], double &data)
+  bool goodUI::createControllerReadOut(const char name[MAX_BRAIN_NAME_LENGTH], double & data)
   {
     //Stops if the maximum amount of data points has been reached.
     if(controllerOutCount >= MAX_CONTROLLER_GRAPH_COUNT) 
     { return 1; }
 
     controllerObjects[controllerOutCount].graphDataType = DOUBLE;
-    controllerObjects[controllerOutCount].doubleData = &data;
+    controllerObjects[controllerOutCount].doubleData = & data;
     controllerObjects[controllerOutCount].nameLength = strlen(name);
     
     for (uint8_t i = 0; i < strlen(name); i++) //Stores the name.

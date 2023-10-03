@@ -18,7 +18,7 @@ using namespace evAPI;
 
 Drive driveBase; //Setup code objects
 competition Competition;
-goodUI UI;
+extern goodUI UI;
 
 int batteryCapacity = 0; //Variables that store info about the battery
 double batteryVolt = 0;

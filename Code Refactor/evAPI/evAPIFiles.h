@@ -11,4 +11,6 @@
 
 #include "../evAPI/vexUI/include/UserInterface.h"
 
+#include "../evAPI/VisionTracker/VisionTracker.h"
+
 #endif // EVAPIFILES_H
