@@ -1,7 +1,7 @@
 #ifndef __DRIVE_H__
 #define __DRIVE_H__
 
-#include "../../../../include/vex.h"
+#include "../../../../evAPI/Common/include/evAPIBasicConfig.h"
 #include "../../../Common/include/evNamespace.h"
 #include "../../../Common/include/generalFunctions.h"
 #include "../../../Common/include/PID.h"

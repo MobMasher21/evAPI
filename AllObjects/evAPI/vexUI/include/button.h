@@ -1,7 +1,7 @@
 #ifndef __BUTTON_H__
 #define __BUTTON_H__
 
-#include "vex.h"
+#include "../../../evAPI/Common/include/evAPIBasicConfig.h"
 #include "../include/icon.h"
 #include "../../Common/include/evNamespace.h"
 

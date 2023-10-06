@@ -1,7 +1,7 @@
 #ifndef __USERINTERFACE_H__
 #define __USERINTERFACE_H__
 
-#include "vex.h"
+#include "../../../evAPI/Common/include/evAPIBasicConfig.h"
 #include "../include/button.h"
 #include "../include/iconArrays.h"
 #include "../../Common/include/colors.h"

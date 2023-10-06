@@ -10,7 +10,7 @@
 #ifndef __CONTROLLERS_H__
 #define __CONTROLLERS_H__
 
-#include "vex.h"
+#include "../../../evAPI/Common/include/evAPIBasicConfig.h"
 
 namespace evAPI
 {
