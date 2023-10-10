@@ -56,23 +56,97 @@ class VisionTracker
     /****** monocular distance setup code ******/
     /**
      * used to calculate single eye distance using downward exponential curve
-     * desmos calculator link https://www.desmos.com/calculator/y1xjjfv2ld
+     * desmos calculator link https://www.desmos.com/calculator/vflase42t0
      * format y=a^(-(x+b))+c
      */
-
+    
+    /**
+     * @brief Sets up a, b, and c values for distance curve y=a^(-(x+b))+c
+     * 
+     * @param a A value in function
+     * @param b B value in function
+     * @param c C value in function
+     */
     void setupDistanceMath(double a, double b, double c);  //set up a, b, and c values
+    
+    /**
+     * @brief 
+     * 
+     * @param state Toggle if monocular distace is being calculated
+     * @return bool Will bounce back the state passed in
+     */
     bool tglDistanceCalculation(bool state);  //allow you to turn on and off distance calculations
-    double returnAverageDistance();  //returns the average distance of ball over the count time
+    
+    /**
+     * @brief Returns the average distance of object over the count time
+     * 
+     * @return double The estimated distance to the object
+     */
+    double returnAverageDistance();  //returns the average distance of object over the count time
+    
+    /**
+     * @brief Turns off distace estimation and averages the object width for use in calibrating distace
+     * 
+     */
     void enableCalibration();  //turns off distance estimation and averages object width instead
 
     /****** functional code ******/
+
+    /**
+     * @brief Takes snapshot and does all math and calculations
+     * 
+     */
     void trackObject();  //takes snapshot and sets object variables
+
+    /**
+     * @brief Return the object count
+     * 
+     * @return int How many objects are on the screen
+     */
     int getObjectCount();
+
+    /**
+     * @brief Return the object width
+     * 
+     * @return int The amout of pixels wide the object is
+     */
     int getObjectXDim();
+
+    /**
+     * @brief Return the object height
+     * 
+     * @return int The amount of pixels tall the object is
+     */
     int getObjectYDim();
+
+    /**
+     * @brief Return the object x position
+     * 
+     * @return int The position of the center of the object in pixels
+     */
     int getObjectXPos();
+
+    /**
+     * @brief Returns the object y position
+     * 
+     * @return int The position of the center of the object in pixels
+     */
     int getObjectYPos();
+
+    /**
+     * @brief Returns if the object is in the center range of the sensor
+     * 
+     * @return true The object is in the center
+     * @return false The object is not in the center
+     */
     bool getLockedState();
+
+    /**
+     * @brief Returns the off direction
+     * 
+     * @return leftAndRight LEFT the object is to the left of the sensor
+     * @return leftAndRight RIGHT the object is to the right of the sensor
+     */
     leftAndRight getOffDirection();
 
   private:
