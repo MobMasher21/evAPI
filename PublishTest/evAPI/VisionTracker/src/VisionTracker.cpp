@@ -152,7 +152,7 @@ void VisionTracker::trackObject() {
     printf("objCnt = %i, ", objectCount);
     printf("isLock = %i\n\n", isLocked);
   }
-  if(calibrationMode) printf("%i\n", int(returnAverageDistance()));
+  if(calibrationMode) printf("%i\n\n", int(returnAverageDistance()));
   
 }
 
