@@ -1,57 +1,43 @@
-#ifndef __BUTTON_H__
-#define __BUTTON_H__
+#ifndef BUTTON_H_
+#define BUTTON_H_
 
-#include "../../../evAPI/Common/include/evAPIBasicConfig.h"
-#include "../include/icon.h"
+#include "../../Common/include/evAPIBasicConfig.h"
 #include "../../Common/include/evNamespace.h"
 
-#define MAX_TITLE_LENGTH 16
-#define MAX_DESCRIPTION_LENGTH 240
+class Button {
+  public:
+    Button(int ID, int * buttonDataLocation);  // Creates a button and sets the ID and store location
 
-namespace evAPI
-{
-  class button {
-    public:
-      button(int ID, int * buttonDataLocation);
-      button(int ID, int * buttonDataLocation, void (*callback)(int));
-      void setIconArray(bool arrayInput[35][35]);
-      void drawButton();
-      void drawButton(color borderColor);
-      void drawButton(color borderColor, int borderSize);
-      void setColor(int r, int g, int b);
-      void setColor(color buttonColor);
-      void setDims(int x, int y, int w, int h);
-      bool pressed(int xPress, int yPress);
+    void updateButtonID(int ID);  // Changes the button ID
+    void changeDataLocation(int * buttonDataLocation);  // Changes the button's data output location
+    void setCallback(void (*callback)(int));  // Sets the callback function for the button
 
-      void setTitle(const char newTitle[MAX_TITLE_LENGTH]);
-      void setDescription(const char newDescription[MAX_DESCRIPTION_LENGTH]);
+    void setColor(color colorInput);  // Sets the button color to a vex color object
+    void setColor(int r, int g, int b);  // Sets the button color to a RGB value
+    void setBorderColor(color colorInput);  // Sets the border color to vex color object
+    void setBorderColor(int r, int g, int b);  // Sets the border color to a RGB value
+    void setBorderThickness(int thickness);  // Sets the thickness of the button border
 
-      char getTitle(int index);
-      char getDescription(int index);
-      int getTitleLength();
-      int getDescriptionLength();
+    void setButtonIcon(bool * iconArray);  // Pass in the icon array
 
-      void setCallback(void (*callback)(int));
+    void setButtonPosition(int x, int y);  // Sets the position of the top left corner of the button
+    void setButtonSize(int widthIN, int hightIN);  // Sets the size of the button
 
-      void setButtonAlliance(allianceType alliance);
-      allianceType getButtonAlliance();
-  
-    private:
-      int buttonID;
-      int * IDStore;
-      void (*buttonCallback)(int);
-      icon buttonIcon;
-      int xPos;
-      int yPos;
-      int width;
-      int hight;
-      color buttonColor;
-      char Title[MAX_TITLE_LENGTH];
-      char Description[MAX_DESCRIPTION_LENGTH];
-      int titleLength = 0;
-      int descriptionLength = 0;
-      allianceType buttonAlliance = noAlliance;
-  };
-}
+    void drawButton(bool border);  // Draws the button with the option of adding the border
+    bool pressed(int xPress, int yPress);  // Call to tell the button the screen was pressed and tell it where
 
-#endif // __BUTTON_H__
+  private:
+    int buttonID;  // The number that will be passed to the data output when the button is pressed
+    int * dataOuput;  // A pointer to the variable that the button will set with its ID when it is pressed
+    void (*buttonCallback)(int);  // *Optional* The function that will be called when the button is pressed, passes the button ID
+    bool * buttonIcon;  // *Optional* The array that is used to draw a monochrome 35x35 image on the button
+    int xPos;  // X position of the top left corner
+    int yPos;  // Y position of the top left corner
+    int width;  // Width of the button
+    int hight;  // Hight of the button
+    color buttonColor;  // Color of the button
+    color buttonBorderColor = white;  // Color of the button border Default: white
+    int borderThickness;  // Thickness of the button border
+};
+
+#endif // BUTTON_H_

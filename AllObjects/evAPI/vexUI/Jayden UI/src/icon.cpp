@@ -1,5 +1,7 @@
 #include "../include/icon.h"
 
+extern brain Brain;
+
 namespace evAPI
 {
   void icon::setIconArray(bool arrayInput[35][35]) {
@@ -22,7 +24,7 @@ namespace evAPI
     Brain.Screen.setPenColor(borderColor);  //draw the background color square
     Brain.Screen.setPenWidth(borderSize);                     // |
     Brain.Screen.setFillColor(backgroundColor);               // |
-    Brain.Screen.drawRectangle(xPos, yPos, width, hight);     // //
+    Brain.Screen.drawRectangle(xPos, yPos, width, hight);     // \/
     if(availableArray != 0) {
       for(int yInc = 0; yInc < floor(hight / 2); yInc++) {
         for(int xInc = 0; xInc < floor(width / 2); xInc++) {
@@ -42,7 +44,7 @@ namespace evAPI
     Brain.Screen.setPenColor(borderColor);  //redraw the border of the icon
     Brain.Screen.setPenWidth(borderSize);                     // |
     Brain.Screen.setFillColor(transparent);                   // |      
-    Brain.Screen.drawRectangle(xPos, yPos, width, hight);     // //
+    Brain.Screen.drawRectangle(xPos, yPos, width, hight);     // \/
   }
   
   void icon::setColor(int r, int g, int b) {
