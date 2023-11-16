@@ -1,7 +1,7 @@
 #ifndef __ICON_H__
 #define __ICON_H__
 
-#include "../../../evAPI/Common/include/evAPIBasicConfig.h"
+#include "vex.h"
 
 namespace evAPI
 {
