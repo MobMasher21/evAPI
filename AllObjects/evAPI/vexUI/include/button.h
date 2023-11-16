@@ -30,7 +30,9 @@ class Button {
     int buttonID;  // The number that will be passed to the data output when the button is pressed
     int * dataOuput;  // A pointer to the variable that the button will set with its ID when it is pressed
     void (*buttonCallback)(int);  // *Optional* The function that will be called when the button is pressed, passes the button ID
+    bool hasCallback;  // If the button has a callback
     bool * buttonIcon;  // *Optional* The array that is used to draw a monochrome 35x35 image on the button
+    bool hasIcon;  // If the button has an icon
     int xPos;  // X position of the top left corner
     int yPos;  // Y position of the top left corner
     int width;  // Width of the button

@@ -15,6 +15,7 @@ void Button::changeDataLocation(int * buttonDataLocation) {  // Changes the butt
 
 void Button::setCallback(void (*callback)(int)) {  // Sets the callback function for the button
   buttonCallback = callback;
+  hasCallback = true;
 }
 
 void Button::setColor(color colorInput) {  // Sets the button color to a vex color object
@@ -39,6 +40,7 @@ void Button::setBorderThickness(int thickness) {  // Sets the thickness of the b
 
 void Button::setButtonIcon(bool * iconArray) { // Pass in the icon array
   buttonIcon = iconArray;
+  hasIcon = true;
 }
 
 void Button::setButtonPosition(int x, int y) {  // Sets the position of the top left corner of the Button
@@ -57,7 +59,7 @@ void Button::drawButton(bool border) {  // Draws the button with the option of a
   Brain.Screen.setFillColor(buttonColor);                 // |
   Brain.Screen.drawRectangle(xPos, yPos, width, hight);   // \/
 
-  if(buttonIcon != 0) {
+  if(hasIcon) {
     for(int yInc = 0; yInc < floor(hight / 2); yInc++) {
       for(int xInc = 0; xInc < floor(width / 2); xInc++) {
         if(buttonIcon[yInc][xInc] == 1) {
@@ -80,7 +82,7 @@ bool Button::pressed(int xPress, int yPress) {  // Call to tell the button the s
     
     *dataOuput = buttonID;
 
-    if(buttonCallback) {
+    if(hasCallback) {
       buttonCallback(buttonID);
     }
 

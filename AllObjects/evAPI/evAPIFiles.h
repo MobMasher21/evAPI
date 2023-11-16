@@ -9,8 +9,6 @@
 
 #include "../evAPI/robotControl/Drivetrain/include/Drive.h"
 
-#include "../evAPI/vexUI/include/UserInterface.h"
-
 #include "../evAPI/VisionTracker/include/VisionTracker.h"
 
 #endif // EVAPIFILES_H
