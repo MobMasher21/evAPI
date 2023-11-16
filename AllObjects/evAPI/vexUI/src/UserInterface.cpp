@@ -20,7 +20,7 @@
 #define BRAIN_CHARACTER_WIDTH 10
 
 #define BRAIN_DISPLAY_TRIGGER 1 //How often the Brain display graphs get updated
-#define CONTROLLER_DISPLAY_TRIGGER 2 //How often the Brain display graphs get updated
+#define CONTROLLER_DISPLAY_TRIGGER 2 //How often the Controller display graphs get updated
 namespace evAPI
 {
   goodUI UI = goodUI();
