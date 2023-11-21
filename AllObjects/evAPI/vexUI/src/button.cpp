@@ -18,11 +18,11 @@ void Button::setCallback(void (*callback)(int)) {  // Sets the callback function
   hasCallback = true;
 }
 
-void Button::setColor(color colorInput) {  // Sets the button color to a vex color object
+void Button::setButtonColor(color colorInput) {  // Sets the button color to a vex color object
   buttonColor = colorInput;
 }
 
-void Button::setColor(int r, int g, int b) {  // Sets the button color to a RGB value
+void Button::setButtonColor(int r, int g, int b) {  // Sets the button color to a RGB value
   buttonColor.rgb(r, g, b);
 }
 
@@ -55,7 +55,11 @@ void Button::setButtonSize(int widthIN, int hightIN) {  // Sets the size of the 
 
 void Button::drawButton(bool border) {  // Draws the button with the option of adding the borderButton
   Brain.Screen.setPenColor(buttonBorderColor);  //draw the background color square
-  Brain.Screen.setPenWidth(borderThickness);              // |
+  if(border) {                                            // |
+    Brain.Screen.setPenWidth(borderThickness);            // |
+  } else {                                                // |
+    Brain.Screen.setPenWidth(0);                          // |
+  }                                                       // |
   Brain.Screen.setFillColor(buttonColor);                 // |
   Brain.Screen.drawRectangle(xPos, yPos, width, hight);   // \/
 

@@ -12,8 +12,8 @@ class Button {
     void changeDataLocation(int * buttonDataLocation);  // Changes the button's data output location
     void setCallback(void (*callback)(int));  // Sets the callback function for the button
 
-    void setColor(color colorInput);  // Sets the button color to a vex color object
-    void setColor(int r, int g, int b);  // Sets the button color to a RGB value
+    void setButtonColor(color colorInput);  // Sets the button color to a vex color object
+    void setButtonColor(int r, int g, int b);  // Sets the button color to a RGB value
     void setBorderColor(color colorInput);  // Sets the border color to vex color object
     void setBorderColor(int r, int g, int b);  // Sets the border color to a RGB value
     void setBorderThickness(int thickness);  // Sets the thickness of the button border
