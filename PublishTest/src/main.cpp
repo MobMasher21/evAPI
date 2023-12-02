@@ -15,10 +15,10 @@ using namespace vex;
 AutoSelector autoSelector;
 
 int main() {
-  autoSelector.addButton(0, red);
-  autoSelector.addButton(1, blue);
-  autoSelector.addButton(2, green);
-  autoSelector.addButton(3, yellow);
+  autoSelector.addButton(0, Red);
+  autoSelector.addButton(1, Blue);
+  autoSelector.addButton(2, Green);
+  autoSelector.addButton(3, Yellow);
   autoSelector.setButtonIcon(0, autoSelector.icons.number5);
   autoSelector.setButtonIcon(1, autoSelector.icons.number7);
   autoSelector.setButtonIcon(2, autoSelector.icons.number4);
