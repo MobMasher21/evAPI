@@ -7,4 +7,6 @@
 
 #include "../evAPI/VisionTracker/include/VisionTracker.h"
 
+#include "../evAPI/vexUI/AutoSelector/include/AutoSelector.h"
+
 #endif // EVAPIFILES_H

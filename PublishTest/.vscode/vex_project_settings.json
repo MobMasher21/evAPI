@@ -4,12 +4,12 @@
 		"json": 2
 	},
 	"project": {
-		"name": "BatB",
+		"name": "evAPI Test",
 		"description": "Most basic code to run Battle at the Bold Compition With",
 		"creationDate": "9/30/2023, 12:45:32 AM",
 		"platform": "V5",
 		"language": "cpp",
-		"slot": 1,
+		"slot": 2,
 		"sdkVersion": "V5_20220726_10_00_00",
 		"cpp": {
 			"includePath": [],
