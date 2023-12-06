@@ -11,23 +11,40 @@
 #include "../evAPI/evAPIFiles.h"
 
 using namespace vex;
+using namespace evAPI;
+
+controller primaryController = controller(primary);
+controller secondaryController = controller(partner);
 
 AutoSelector autoSelector;
+Drive robotBase;
+DriverBaseControl driverControl = DriverBaseControl(primaryController, RCControl, robotBase);
 
 int main() {
   autoSelector.addButton(0, Red);
   autoSelector.addButton(1, Blue);
   autoSelector.addButton(2, Green);
   autoSelector.addButton(3, Yellow);
+
   autoSelector.setButtonIcon(0, autoSelector.icons.number5);
   autoSelector.setButtonIcon(1, autoSelector.icons.number7);
   autoSelector.setButtonIcon(2, autoSelector.icons.number4);
   autoSelector.setButtonIcon(3, autoSelector.icons.number9);
+
   autoSelector.setButtonTitle(0, "Hello");
   autoSelector.setButtonTitle(1, "bye");
   autoSelector.setButtonDescription(1, "This is a very very very very very very very very very very very long sentence just to test things out\noh and there was also a new line");
+  
   autoSelector.printButtons();
   autoSelector.startThread();
+
+  robotBase.setGearbox(blueGearBox);
+  robotBase.leftPortSetup(1, 2, 3);
+  robotBase.rightPortSetup(4, 5, 6);
+  robotBase.leftReverseSetup(false, false, false);
+  robotBase.rightPortSetup(true, true, true);
+  robotBase.setupInertialSensor(7);
+
   while (true) {
     wait(100, msec);
   }
