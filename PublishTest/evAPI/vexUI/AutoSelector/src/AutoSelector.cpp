@@ -17,8 +17,16 @@ AutoSelector::AutoSelector() {  // Constructor to set up page turning buttons
   thisContext = this;
 }
 
-int AutoSelector::setSelectedButton() {  // Returns the selectedButton
+int AutoSelector::getSelectedButton() {  // Returns the selectedButton
   return(selectedButton);
+}
+
+void AutoSelector::setSelectedButton(int button) {  // Sets the currently selected button
+  selectedButton = button;
+}
+
+void AutoSelector::setSelectedPage(int page) {  // Sets the currently selected page
+  selectedPage = page;
 }
 
 int AutoSelector::addButton(int ID, int r, int g, int b) {  // Adds a button with the set ID and RGB color. Returns button count

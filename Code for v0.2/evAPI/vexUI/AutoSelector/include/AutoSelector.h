@@ -14,7 +14,9 @@
 class AutoSelector {
   public:
     AutoSelector();  // Constructor to set up page turning buttons
-    int setSelectedButton();  // Returns the selectedButton
+    int getSelectedButton();  // Returns the selectedButton
+    void setSelectedButton(int button);  // Sets the currently selected button
+    void setSelectedPage(int page);  // Sets the currently selected page
     
     int addButton(int ID, int r, int g, int b);  // Adds a button with the set ID and RGB color
     int addButton(int ID, color buttonColor);  // Adds a button with the set ID and vex color object
