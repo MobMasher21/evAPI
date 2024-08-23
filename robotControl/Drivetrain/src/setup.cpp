@@ -57,18 +57,24 @@ void Drive::setGearbox(vex::gearSetting driveGear) {  // sets gearbox for all mo
 void Drive::leftPortSetup(int port1) {  // left motor port setup for 2 motor drive
   leftMotor1 = new vex::motor(smartPortLookupTable[port1], currentGear);
   baseMotorCount = 2;
-  leftTracker = new SmartEncoder(leftMotor1);
+  if (leftTracker != nullptr) {
+    leftTracker->setEncoderMotor(leftMotor1);
+  } else {
+    leftTracker = new SmartEncoder(leftMotor1);
+  }
   leftDriveTracker = leftTracker->newTracker();  // creates drive tracker
-  leftOdoTracker = leftTracker->newTracker();    // creates odo tracker
 }
 
 void Drive::leftPortSetup(int port1, int port2) {  // left motor port setup for 4 motor drive
   leftMotor1 = new vex::motor(smartPortLookupTable[port1], currentGear);
   leftMotor2 = new vex::motor(smartPortLookupTable[port2], currentGear);
   baseMotorCount = 4;
-  leftTracker = new SmartEncoder(leftMotor1);
+  if (leftTracker != nullptr) {
+    leftTracker->setEncoderMotor(leftMotor1);
+  } else {
+    leftTracker = new SmartEncoder(leftMotor1);
+  }
   leftDriveTracker = leftTracker->newTracker();  // creates drive tracker
-  leftOdoTracker = leftTracker->newTracker();    // creates odo tracker
 }
 
 void Drive::leftPortSetup(int port1, int port2, int port3) {  // left motor port setup for 6 motor drive
@@ -76,9 +82,12 @@ void Drive::leftPortSetup(int port1, int port2, int port3) {  // left motor port
   leftMotor2 = new vex::motor(smartPortLookupTable[port2], currentGear);
   leftMotor3 = new vex::motor(smartPortLookupTable[port3], currentGear);
   baseMotorCount = 6;
-  leftTracker = new SmartEncoder(leftMotor1);
+  if (leftTracker != nullptr) {
+    leftTracker->setEncoderMotor(leftMotor1);
+  } else {
+    leftTracker = new SmartEncoder(leftMotor1);
+  }
   leftDriveTracker = leftTracker->newTracker();  // creates drive tracker
-  leftOdoTracker = leftTracker->newTracker();    // creates odo tracker
 }
 
 void Drive::leftPortSetup(int port1, int port2, int port3, int port4) {  // left motor port setup for 8 motor drive
@@ -87,33 +96,45 @@ void Drive::leftPortSetup(int port1, int port2, int port3, int port4) {  // left
   leftMotor3 = new vex::motor(smartPortLookupTable[port3], currentGear);
   leftMotor4 = new vex::motor(smartPortLookupTable[port4], currentGear);
   baseMotorCount = 8;
-  leftTracker = new SmartEncoder(leftMotor1);
+  if (leftTracker != nullptr) {
+    leftTracker->setEncoderMotor(leftMotor1);
+  } else {
+    leftTracker = new SmartEncoder(leftMotor1);
+  }
   leftDriveTracker = leftTracker->newTracker();  // creates drive tracker
-  leftOdoTracker = leftTracker->newTracker();    // creates odo tracker
 }
 
 void Drive::rightPortSetup(int port1) {  // right motor port setup for 2 motor drive
   rightMotor1 = new vex::motor(smartPortLookupTable[port1], currentGear);
-  rightTracker = new SmartEncoder(rightMotor1);
+  if (rightTracker != nullptr) {
+    rightTracker->setEncoderMotor(rightMotor1);
+  } else {
+    rightTracker = new SmartEncoder(rightMotor1);
+  }
   rightDriveTracker = rightTracker->newTracker();  // creates drive tracker
-  rightOdoTracker = rightTracker->newTracker();    // creates odo tracker
 }
 
 void Drive::rightPortSetup(int port1, int port2) {  // right motor port setup for 4 motor drive
   rightMotor1 = new vex::motor(smartPortLookupTable[port1], currentGear);
   rightMotor2 = new vex::motor(smartPortLookupTable[port2], currentGear);
-  rightTracker = new SmartEncoder(rightMotor1);
+  if (rightTracker != nullptr) {
+    rightTracker->setEncoderMotor(rightMotor1);
+  } else {
+    rightTracker = new SmartEncoder(rightMotor1);
+  }
   rightDriveTracker = rightTracker->newTracker();  // creates drive tracker
-  rightOdoTracker = rightTracker->newTracker();    // creates odo tracker
 }
 
 void Drive::rightPortSetup(int port1, int port2, int port3) {  // right motor port setup for 6 motor drive
   rightMotor1 = new vex::motor(smartPortLookupTable[port1], currentGear);
   rightMotor2 = new vex::motor(smartPortLookupTable[port2], currentGear);
   rightMotor3 = new vex::motor(smartPortLookupTable[port3], currentGear);
-  rightTracker = new SmartEncoder(rightMotor1);
+  if (rightTracker != nullptr) {
+    rightTracker->setEncoderMotor(rightMotor1);
+  } else {
+    rightTracker = new SmartEncoder(rightMotor1);
+  }
   rightDriveTracker = rightTracker->newTracker();  // creates drive tracker
-  rightOdoTracker = rightTracker->newTracker();    // creates odo tracker
 }
 
 void Drive::rightPortSetup(int port1, int port2, int port3, int port4) {  // right motor port setup for 8 motor drive
@@ -121,9 +142,12 @@ void Drive::rightPortSetup(int port1, int port2, int port3, int port4) {  // rig
   rightMotor2 = new vex::motor(smartPortLookupTable[port2], currentGear);
   rightMotor3 = new vex::motor(smartPortLookupTable[port3], currentGear);
   rightMotor4 = new vex::motor(smartPortLookupTable[port4], currentGear);
-  rightTracker = new SmartEncoder(rightMotor1);
+  if (rightTracker != nullptr) {
+    rightTracker->setEncoderMotor(rightMotor1);
+  } else {
+    rightTracker = new SmartEncoder(rightMotor1);
+  }
   rightDriveTracker = rightTracker->newTracker();  // creates drive tracker
-  rightOdoTracker = rightTracker->newTracker();    // creates odo tracker
 }
 
 void Drive::leftReverseSetup(bool reverse1) {  // left motor reverse setup for 2 motor drive
@@ -174,13 +198,31 @@ void Drive::rightReverseSetup(bool reverse1, bool reverse2, bool reverse3, bool 
 void Drive::leftEncoderSetup(int port, double wheelSize, bool reverse) {  // setup values for left encoder
   leftEncoder = new vex::rotation(smartPortLookupTable[port], reverse);
   leftEncoderDegsPerInch = (360 / (wheelSize * M_PI));
-  leftTracker->setEncoderRotation(leftEncoder);
+  if (leftTracker != nullptr) {
+    leftTracker->setEncoderRotation(leftEncoder);
+  } else {
+    leftTracker = new SmartEncoder(leftEncoder);
+  }
 }
 
 void Drive::rightEncoderSetup(int port, double wheelSize, bool reverse) {  // setup values for right encoder
   rightEncoder = new vex::rotation(smartPortLookupTable[port], reverse);
   rightEncoderDegsPerInch = (360 / (wheelSize * M_PI));
-  rightTracker->setEncoderRotation(rightEncoder);
+  if (rightTracker != nullptr) {
+    rightTracker->setEncoderRotation(rightEncoder);
+  } else {
+    rightTracker = new SmartEncoder(rightEncoder);
+  }
+}
+
+void Drive::backEncoderSetup(int port, double wheelSize, bool reverse) {  // setup values for back encoder
+  backEncoder = new vex::rotation(smartPortLookupTable[port], reverse);
+  backEncoderDegsPerInch = (360 / (wheelSize * M_PI));
+  if (backTracker != nullptr) {
+    backTracker->setEncoderRotation(backEncoder);
+  } else {
+    backTracker = new SmartEncoder(backEncoder);
+  }
 }
 
 /*----- pid setup -----*/

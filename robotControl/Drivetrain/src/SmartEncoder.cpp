@@ -4,6 +4,10 @@ SmartEncoder::SmartEncoder(vex::motor* motorEncoderObject) {  // constructor to 
   motorEncoder = motorEncoderObject;
 }
 
+SmartEncoder::SmartEncoder(vex::rotation* rotationEncoderObject) {  // constructor to use motor encoder
+  rotationEncoder = rotationEncoderObject;
+}
+
 void SmartEncoder::setEncoderMotor(vex::motor* motorEncoderObject) {  // constructor to use motor encoder
   motorEncoder = motorEncoderObject;
 }
@@ -37,7 +41,11 @@ double SmartEncoder::encoderRead() {  // reads the raw encoder, motor or rotatio
   if (rotationEncoder != nullptr) {
     return (rotationEncoder->position(vex::rotationUnits::deg));
   } else {
-    return (motorEncoder->position(vex::rotationUnits::deg));
+    if (motorEncoder != nullptr) {
+      return (motorEncoder->position(vex::rotationUnits::deg));
+    } else {
+      return (0);
+    }
   }
 }
 
@@ -45,6 +53,8 @@ void SmartEncoder::encoderReset() {  // resets the encoder, motor or rotation
   if (rotationEncoder != nullptr) {
     rotationEncoder->resetPosition();
   } else {
-    motorEncoder->resetPosition();
+    if (motorEncoder != nullptr) {
+      motorEncoder->resetPosition();
+    }
   }
 }
