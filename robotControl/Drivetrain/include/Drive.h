@@ -449,6 +449,12 @@ class Drive {
     /*----- odo tracking -----*/
 
     /**
+     * @brief Prints out the raw encoder angles to the terminal
+     * 
+     */
+    void odoReadouts();
+
+    /**
      * @brief Sets the offset of the back encoder wheel and the width of the side trackers
      *
      * @param backOffset Distance of center of back wheel from robot turning center

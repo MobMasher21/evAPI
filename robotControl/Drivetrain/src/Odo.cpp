@@ -5,6 +5,12 @@ extern Drive* threadReference;
 
 void hiddenOdoThreadFunction();  // function for odo thread
 
+void Drive::odoReadouts() {  // prints raw wheel data
+  printf("%f,", leftTracker->readTrackerPosition(leftOdoTracker));
+  printf("%f,", rightTracker->readTrackerPosition(rightOdoTracker));
+  printf("%f\n", backTracker->readTrackerPosition(backOdoTracker));
+}
+
 void Drive::setupOdometry(double trackWidth) {
   if (trackWidth == 0) trackWidth = driveBaseWidth;
   odoTracker = new OdoMath(trackWidth);
