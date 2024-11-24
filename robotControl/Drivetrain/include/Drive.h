@@ -489,6 +489,9 @@ class Drive {
      */
     double getMotorSpeed(vex::turnType side);
 
+    vex::motor* getLeftMotor(int index);
+    vex::motor* getRightMotor(int index);
+
   private:
     /************ motors ************/
     /*----- left motors -----*/
