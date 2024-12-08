@@ -494,6 +494,9 @@ class Drive {
 
   private:
     /************ motors ************/
+
+    void balanceMotors(); // checks if a motor is unplugged and disables the corrsponding motor to balance
+
     /*----- left motors -----*/
     void spinLeftMotors(int speed);            // spins all motors on the left side
     void stopLeftMotors(vex::brakeType type);  // stop all motors on the left side
@@ -501,6 +504,7 @@ class Drive {
     vex::motor* leftMotor2 = nullptr;          // used in 4 (back), 6 (middle), 8 (front middle) motor drive
     vex::motor* leftMotor3 = nullptr;          // used in 6 (back), 8 (back middle) motor drive
     vex::motor* leftMotor4 = nullptr;          // used in 8 (back) motor drive
+    vex::motor* activeLeftMotors[4] = { [0 ... 3] = nullptr };
 
     /*----- right motors -----*/
     void spinRightMotors(int speed);            // spins all motors on the right side
@@ -509,6 +513,7 @@ class Drive {
     vex::motor* rightMotor2 = nullptr;          // used in 4 (back), 6 (middle), 8 (front middle) motor drive
     vex::motor* rightMotor3 = nullptr;          // used in 6 (back), 8 (back middle) motor drive
     vex::motor* rightMotor4 = nullptr;          // used in 8 (back) motor drive
+    vex::motor* activeRightMotors[4] = { [0 ... 3] = nullptr };
 
     /****** encoders ******/
     vex::rotation* leftEncoder;            // pointer to left encoder object

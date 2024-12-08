@@ -3,97 +3,54 @@
 namespace evAPI {
 //======================================== private =============================================
 /************ motors ************/
+
+void Drive::balanceMotors() {
+  vex::motor* leftMotors[4] = {leftMotor1, leftMotor2, leftMotor3, leftMotor4};
+  vex::motor* rightMotors[4] = {rightMotor1, rightMotor2, rightMotor3, rightMotor4};
+
+  for (int i = 0; i < baseMotorCount; i++) {
+    if (!leftMotors[i]->installed() || !rightMotors[i]->installed()) {
+      activeLeftMotors[i] = nullptr;
+      activeRightMotors[i] = nullptr;
+    }
+  }
+}
+
 /*----- left motors -----*/
 void Drive::spinLeftMotors(int speed) {  // spins all motors on the left side
-  switch (baseMotorCount) {
-    case 2:
-      leftMotor1->spin(vex::directionType::fwd, speed, vex::pct);
-      break;
-    case 4:
-      leftMotor1->spin(vex::directionType::fwd, speed, vex::pct);
-      leftMotor2->spin(vex::directionType::fwd, speed, vex::pct);
-      break;
-    case 6:
-      leftMotor1->spin(vex::directionType::fwd, speed, vex::pct);
-      leftMotor2->spin(vex::directionType::fwd, speed, vex::pct);
-      leftMotor3->spin(vex::directionType::fwd, speed, vex::pct);
-      break;
-    case 8:
-      leftMotor1->spin(vex::directionType::fwd, speed, vex::pct);
-      leftMotor2->spin(vex::directionType::fwd, speed, vex::pct);
-      leftMotor3->spin(vex::directionType::fwd, speed, vex::pct);
-      leftMotor4->spin(vex::directionType::fwd, speed, vex::pct);
-      break;
+  balanceMotors();
+  for (int i = 0; i < 4; i++) {
+    if (activeLeftMotors[i] != nullptr) {
+      activeLeftMotors[i]->spin(vex::directionType::fwd, speed, vex::pct);
+    }
   }
 }
 
 void Drive::stopLeftMotors(vex::brakeType type) {  // stop all motors on the left side
-  switch (baseMotorCount) {
-    case 2:
-      leftMotor1->stop(type);
-      break;
-    case 4:
-      leftMotor1->stop(type);
-      leftMotor2->stop(type);
-      break;
-    case 6:
-      leftMotor1->stop(type);
-      leftMotor2->stop(type);
-      leftMotor3->stop(type);
-      break;
-    case 8:
-      leftMotor1->stop(type);
-      leftMotor2->stop(type);
-      leftMotor3->stop(type);
-      leftMotor4->stop(type);
-      break;
+  balanceMotors();
+  for (int i = 0; i < 4; i++) {
+    if (activeLeftMotors[i] != nullptr) {
+      activeLeftMotors[i]->stop(type);
+    }
   }
 }
 
 /*----- right motors -----*/
 void Drive::spinRightMotors(int speed) {  // spins all motors on the right side
-  switch (baseMotorCount) {
-    case 2:
-      rightMotor1->spin(vex::directionType::fwd, speed, vex::pct);
-      break;
-    case 4:
-      rightMotor1->spin(vex::directionType::fwd, speed, vex::pct);
-      rightMotor2->spin(vex::directionType::fwd, speed, vex::pct);
-      break;
-    case 6:
-      rightMotor1->spin(vex::directionType::fwd, speed, vex::pct);
-      rightMotor2->spin(vex::directionType::fwd, speed, vex::pct);
-      rightMotor3->spin(vex::directionType::fwd, speed, vex::pct);
-      break;
-    case 8:
-      rightMotor1->spin(vex::directionType::fwd, speed, vex::pct);
-      rightMotor2->spin(vex::directionType::fwd, speed, vex::pct);
-      rightMotor3->spin(vex::directionType::fwd, speed, vex::pct);
-      rightMotor4->spin(vex::directionType::fwd, speed, vex::pct);
-      break;
+  balanceMotors();
+  for (int i = 0; i < 4; i++) {
+    if (activeRightMotors[i] != nullptr) {
+      activeRightMotors[i]->spin(vex::directionType::fwd, speed, vex::pct);
+    }
   }
 }
 
 void Drive::stopRightMotors(vex::brakeType type) {  // stop all motors on the right side
-  switch (baseMotorCount) {
-    case 2:
-      rightMotor1->stop(type);
-      break;
-    case 4:
-      rightMotor1->stop(type);
-      rightMotor2->stop(type);
-      break;
-    case 6:
-      rightMotor1->stop(type);
-      rightMotor2->stop(type);
-      rightMotor3->stop(type);
-      break;
-    case 8:
-      rightMotor1->stop(type);
-      rightMotor2->stop(type);
-      rightMotor3->stop(type);
-      rightMotor4->stop(type);
-      break;
+  balanceMotors();
+  for (int i = 0; i < 4; i++) {
+    if (activeRightMotors[i] != nullptr) {
+      activeRightMotors[i]->stop(type);
+    }
   }
 }
 }  // namespace evAPI
