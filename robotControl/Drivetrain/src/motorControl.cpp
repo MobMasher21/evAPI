@@ -9,10 +9,14 @@ void Drive::balanceMotors() {
   vex::motor* rightMotors[4] = {rightMotor1, rightMotor2, rightMotor3, rightMotor4};
 
   for (int i = 0; i < baseMotorCount; i++) {
-    if (!leftMotors[i]->installed() || !rightMotors[i]->installed()) {
+    if (leftMotors[i]->installed() && rightMotors[i]->installed()) {
+      activeLeftMotors[i] = leftMotors[i];
+      activeRightMotors[i] = rightMotors[i];
+    } else if (!leftMotors[i]->installed() || !rightMotors[i]->installed()) {
       activeLeftMotors[i] = nullptr;
       activeRightMotors[i] = nullptr;
     }
+    
   }
 }
 
