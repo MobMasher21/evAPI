@@ -1,6 +1,8 @@
 #ifndef __DRIVE_H__
 #define __DRIVE_H__
 
+#include <array>
+
 #include "../../../Common/include/PID.h"
 #include "../../../Common/include/generalFunctions.h"
 #include "../../OdoTracking/include/OdoMath.h"
@@ -76,129 +78,29 @@ class Drive {
     /*----- motor ports and reverses -----*/
 
     /**
-     * @brief Sets the cartage type that is used in the motors.
+     * @brief Sets up the motors for the drivebase - use templated version unless motor count is not known at compile time
+     * @param motorCount The number of motors on each side
+     * @param leftPorts Ports for the left side
+     * @param rightPorts Ports for the right side
+     * @param leftReverse Which left side motors are reversed
+     * @param rightReverse Which right side motors are reversed
+     * @param gearSetting Which gear cartridge the motors are using
      */
-    void setGearbox(vex::gearSetting driveGear);
+    void motorSetup(int motorCount, int leftPorts[], int rightPorts[], bool leftReverse[], bool rightReverse[], vex::gearSetting gearSetting);
 
     /**
-     * @brief Configures the left side of the base to have one motor.
-     * @param port1 The port the motor is in.
+     * @brief Sets up the motors for the drivebase - use templated version unless motor count is not known at compile time
+     * @tparam N The number of motors on each side
+     * @param leftPorts Ports for the left side
+     * @param rightPorts Ports for the right side
+     * @param leftReverse Which left side motors are reversed
+     * @param rightReverse Which right side motors are reversed
+     * @param gearSetting Which gear cartridge the motors are using
      */
-    void leftPortSetup(int port1);
-
-    /**
-     * @brief Configures the left side of the base to have two motors.
-     * @param port1 The port the first motor is in.
-     * @param port2 The port the second motor is in.
-     */
-    void leftPortSetup(int port1, int port2);
-
-    /**
-     * @brief Configures the left side of the base to have three motors.
-     * @param port1 The port the first motor is in.
-     * @param port2 The port the second motor is in.
-     * @param port3 The port the third motor is in.
-     */
-    void leftPortSetup(int port1, int port2, int port3);
-
-    /**
-     * @brief Configures the left side of the base to have four motors.
-     * @param port1 The port the first motor is in.
-     * @param port2 The port the second motor is in.
-     * @param port3 The port the third motor is in.
-     * @param port4 The port the forth motor is in.
-     */
-    void leftPortSetup(int port1, int port2, int port3, int port4);
-
-    /**
-     * @brief Configures the right side of the base to have one motor.
-     * @param port1 The port the motor is in.
-     */
-    void rightPortSetup(int port1);
-
-    /**
-     * @brief Configures the right side of the base to have two motors.
-     * @param port1 The port the first motor is in.
-     * @param port2 The port the second motor is in.
-     */
-    void rightPortSetup(int port1, int port2);
-
-    /**
-     * @brief Configures the right side of the base to have three motors.
-     * @param port1 The port the first motor is in.
-     * @param port2 The port the second motor is in.
-     * @param port3 The port the third motor is in.
-     */
-    void rightPortSetup(int port1, int port2, int port3);
-
-    /**
-     * @brief Configures the right side of the base to have four motors.
-     * @param port1 The port the first motor is in.
-     * @param port2 The port the second motor is in.
-     * @param port3 The port the third motor is in.
-     * @param port4 The port the forth motor is in.
-     */
-    void rightPortSetup(int port1, int port2, int port3, int port4);
-
-    /**
-     * @brief Sets what motors are reversed in the left side.
-     * @param reverse1 The reversed status of the first motor.
-     */
-    void leftReverseSetup(bool reverse1);
-
-    /**
-     * @brief Sets what motors are reversed in the left side.
-     * @param reverse1 The reversed status of the first motor.
-     * @param reverse2 The reversed status of the second motor.
-     */
-    void leftReverseSetup(bool reverse1, bool reverse2);
-
-    /**
-     * @brief Sets what motors are reversed in the left side.
-     * @param reverse1 The reversed status of the first motor.
-     * @param reverse2 The reversed status of the second motor.
-     * @param reverse3 The reversed status of the third motor.
-     */
-    void leftReverseSetup(bool reverse1, bool reverse2, bool reverse3);
-
-    /**
-     * @brief Sets what motors are reversed in the left side.
-     * @param reverse1 The reversed status of the first motor.
-     * @param reverse2 The reversed status of the second motor.
-     * @param reverse3 The reversed status of the third motor.
-     * @param reverse4 The reversed status of the forth motor.
-     */
-    void leftReverseSetup(bool reverse1, bool reverse2, bool reverse3, bool reverse4);
-
-    /**
-     * @brief Sets what motors are reversed in the right side.
-     * @param reverse1 The reversed status of the first motor.
-     */
-    void rightReverseSetup(bool reverse1);
-
-    /**
-     * @brief Sets what motors are reversed in the right side.
-     * @param reverse1 The reversed status of the first motor.
-     * @param reverse2 The reversed status of the second motor.
-     */
-    void rightReverseSetup(bool reverse1, bool reverse2);
-
-    /**
-     * @brief Sets what motors are reversed in the right side.
-     * @param reverse1 The reversed status of the first motor.
-     * @param reverse2 The reversed status of the second motor.
-     * @param reverse3 The reversed status of the third motor.
-     */
-    void rightReverseSetup(bool reverse1, bool reverse2, bool reverse3);
-
-    /**
-     * @brief Sets what motors are reversed in the right side.
-     * @param reverse1 The reversed status of the first motor.
-     * @param reverse2 The reversed status of the second motor.
-     * @param reverse3 The reversed status of the third motor.
-     * @param reverse4 The reversed status of the forth motor.
-     */
-    void rightReverseSetup(bool reverse1, bool reverse2, bool reverse3, bool reverse4);
+    template <int N>
+    void motorSetup(std::array<int, N> leftPorts, std::array<int, N> rightPorts, std::array<bool, N> leftReverse, std::array<bool, N> rightReverse, vex::gearSetting gearSetting) {
+      motorSetup(N, leftPorts.data(), rightPorts.data(), leftReverse.data(), rightReverse.data(), gearSetting);
+    }
 
     /*----- encoder setup -----*/
 
@@ -495,25 +397,19 @@ class Drive {
   private:
     /************ motors ************/
 
-    void balanceMotors(); // checks if a motor is unplugged and disables the corrsponding motor to balance
+    void balanceMotors();  // checks if a motor is unplugged and disables the corrsponding motor to balance
 
     /*----- left motors -----*/
-    void spinLeftMotors(int speed);            // spins all motors on the left side
-    void stopLeftMotors(vex::brakeType type);  // stop all motors on the left side
-    vex::motor* leftMotor1 = nullptr;          // used in 2, 4 (front), 6 (front), 8 (front) motor drive
-    vex::motor* leftMotor2 = nullptr;          // used in 4 (back), 6 (middle), 8 (front middle) motor drive
-    vex::motor* leftMotor3 = nullptr;          // used in 6 (back), 8 (back middle) motor drive
-    vex::motor* leftMotor4 = nullptr;          // used in 8 (back) motor drive
-    vex::motor* activeLeftMotors[4] = { [0 ... 3] = nullptr };
+    void spinLeftMotors(int speed);             // spins all motors on the left side
+    void stopLeftMotors(vex::brakeType type);   // stop all motors on the left side
+    std::vector<vex::motor*> leftMotors;        // motors on left side of base
+    std::vector<vex::motor*> activeLeftMotors;  // motors on left side of base that have not been disabled to balance
 
     /*----- right motors -----*/
-    void spinRightMotors(int speed);            // spins all motors on the right side
-    void stopRightMotors(vex::brakeType type);  // stop all motors on the right side
-    vex::motor* rightMotor1 = nullptr;          // used in 2, 4 (front), 6 (front), 8 (front) motor drive
-    vex::motor* rightMotor2 = nullptr;          // used in 4 (back), 6 (middle), 8 (front middle) motor drive
-    vex::motor* rightMotor3 = nullptr;          // used in 6 (back), 8 (back middle) motor drive
-    vex::motor* rightMotor4 = nullptr;          // used in 8 (back) motor drive
-    vex::motor* activeRightMotors[4] = { [0 ... 3] = nullptr };
+    void spinRightMotors(int speed);             // spins all motors on the right side
+    void stopRightMotors(vex::brakeType type);   // stop all motors on the right side
+    std::vector<vex::motor*> rightMotors;        // motors on right side of base
+    std::vector<vex::motor*> activeRightMotors;  // motors on right side of base that have not been disabled to balance
 
     /****** encoders ******/
     vex::rotation* leftEncoder;            // pointer to left encoder object
@@ -538,7 +434,7 @@ class Drive {
 
     /****** motor and wheel settings ******/
     bool isDebugMode = false;  // is debug mode on
-    int baseMotorCount;
+    int motorCount;            // the number of motors on each side of drive base
     vex::gearSetting currentGear;
     float wheelSize;    // stores the diameter of wheel
     float gearInput;    // stores the input value of the gear ratio

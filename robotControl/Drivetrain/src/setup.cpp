@@ -15,183 +15,38 @@ void Drive::geartrainSetup(float diameter, int gearIN, int gearOUT) {  // used f
 
 void Drive::setStoppingMode(vex::brakeType mode) {
   // Left motors
-  if (leftMotor1 != nullptr) {
-    leftMotor1->setStopping(mode);
-  }
-
-  if (leftMotor2 != nullptr) {
-    leftMotor2->setStopping(mode);
-  }
-
-  if (leftMotor3 != nullptr) {
-    leftMotor3->setStopping(mode);
-  }
-
-  if (leftMotor4 != nullptr) {
-    leftMotor4->setStopping(mode);
+  for (vex::motor* motor : leftMotors) {
+    motor->setStopping(mode);
   }
 
   // Right motors
-  if (rightMotor1 != nullptr) {
-    rightMotor1->setStopping(mode);
-  }
-
-  if (rightMotor2 != nullptr) {
-    rightMotor2->setStopping(mode);
-  }
-
-  if (rightMotor3 != nullptr) {
-    rightMotor3->setStopping(mode);
-  }
-
-  if (rightMotor4 != nullptr) {
-    rightMotor4->setStopping(mode);
+  for (vex::motor* motor : rightMotors) {
+    motor->setStopping(mode);
   }
 }
 
-/*----- motor ports and reverses -----*/
-void Drive::setGearbox(vex::gearSetting driveGear) {  // sets gearbox for all motors
-  currentGear = driveGear;
-}
+void Drive::motorSetup(int motorCount, int leftPorts[], int rightPorts[], bool leftReverse[], bool rightReverse[], vex::gearSetting gearSetting) {
+  leftMotors.clear();
+  rightMotors.clear();
 
-void Drive::leftPortSetup(int port1) {  // left motor port setup for 2 motor drive
-  leftMotor1 = new vex::motor(smartPortLookupTable[port1], currentGear);
-  baseMotorCount = 2;
+  this->motorCount = motorCount;
+
+  for (int i = 0; i < motorCount; i++) {
+    vex::motor* newLeftMotor = new vex::motor(smartPortLookupTable[leftPorts[i]], gearSetting, leftReverse[i]);
+    vex::motor* newRightMotor = new vex::motor(smartPortLookupTable[rightPorts[i]], gearSetting, leftReverse[i]);
+    leftMotors.push_back(newLeftMotor);
+    rightMotors.push_back(newRightMotor);
+  }
+
+  activeLeftMotors = leftMotors;
+  activeRightMotors = rightMotors;
+
   if (leftTracker != nullptr) {
-    leftTracker->setEncoderMotor(leftMotor1);
+    leftTracker->setEncoderMotor(leftMotors[0]);
   } else {
-    leftTracker = new SmartEncoder(leftMotor1);
+    leftTracker = new SmartEncoder(leftMotors[0]);
   }
   leftDriveTracker = leftTracker->newTracker();  // creates drive tracker
-}
-
-void Drive::leftPortSetup(int port1, int port2) {  // left motor port setup for 4 motor drive
-  leftMotor1 = new vex::motor(smartPortLookupTable[port1], currentGear);
-  leftMotor2 = new vex::motor(smartPortLookupTable[port2], currentGear);
-  baseMotorCount = 4;
-  if (leftTracker != nullptr) {
-    leftTracker->setEncoderMotor(leftMotor1);
-  } else {
-    leftTracker = new SmartEncoder(leftMotor1);
-  }
-  leftDriveTracker = leftTracker->newTracker();  // creates drive tracker
-}
-
-void Drive::leftPortSetup(int port1, int port2, int port3) {  // left motor port setup for 6 motor drive
-  leftMotor1 = new vex::motor(smartPortLookupTable[port1], currentGear);
-  leftMotor2 = new vex::motor(smartPortLookupTable[port2], currentGear);
-  leftMotor3 = new vex::motor(smartPortLookupTable[port3], currentGear);
-  baseMotorCount = 6;
-  if (leftTracker != nullptr) {
-    leftTracker->setEncoderMotor(leftMotor1);
-  } else {
-    leftTracker = new SmartEncoder(leftMotor1);
-  }
-  leftDriveTracker = leftTracker->newTracker();  // creates drive tracker
-}
-
-void Drive::leftPortSetup(int port1, int port2, int port3, int port4) {  // left motor port setup for 8 motor drive
-  leftMotor1 = new vex::motor(smartPortLookupTable[port1], currentGear);
-  leftMotor2 = new vex::motor(smartPortLookupTable[port2], currentGear);
-  leftMotor3 = new vex::motor(smartPortLookupTable[port3], currentGear);
-  leftMotor4 = new vex::motor(smartPortLookupTable[port4], currentGear);
-  baseMotorCount = 8;
-  if (leftTracker != nullptr) {
-    leftTracker->setEncoderMotor(leftMotor1);
-  } else {
-    leftTracker = new SmartEncoder(leftMotor1);
-  }
-  leftDriveTracker = leftTracker->newTracker();  // creates drive tracker
-}
-
-void Drive::rightPortSetup(int port1) {  // right motor port setup for 2 motor drive
-  rightMotor1 = new vex::motor(smartPortLookupTable[port1], currentGear);
-  if (rightTracker != nullptr) {
-    rightTracker->setEncoderMotor(rightMotor1);
-  } else {
-    rightTracker = new SmartEncoder(rightMotor1);
-  }
-  rightDriveTracker = rightTracker->newTracker();  // creates drive tracker
-}
-
-void Drive::rightPortSetup(int port1, int port2) {  // right motor port setup for 4 motor drive
-  rightMotor1 = new vex::motor(smartPortLookupTable[port1], currentGear);
-  rightMotor2 = new vex::motor(smartPortLookupTable[port2], currentGear);
-  if (rightTracker != nullptr) {
-    rightTracker->setEncoderMotor(rightMotor1);
-  } else {
-    rightTracker = new SmartEncoder(rightMotor1);
-  }
-  rightDriveTracker = rightTracker->newTracker();  // creates drive tracker
-}
-
-void Drive::rightPortSetup(int port1, int port2, int port3) {  // right motor port setup for 6 motor drive
-  rightMotor1 = new vex::motor(smartPortLookupTable[port1], currentGear);
-  rightMotor2 = new vex::motor(smartPortLookupTable[port2], currentGear);
-  rightMotor3 = new vex::motor(smartPortLookupTable[port3], currentGear);
-  if (rightTracker != nullptr) {
-    rightTracker->setEncoderMotor(rightMotor1);
-  } else {
-    rightTracker = new SmartEncoder(rightMotor1);
-  }
-  rightDriveTracker = rightTracker->newTracker();  // creates drive tracker
-}
-
-void Drive::rightPortSetup(int port1, int port2, int port3, int port4) {  // right motor port setup for 8 motor drive
-  rightMotor1 = new vex::motor(smartPortLookupTable[port1], currentGear);
-  rightMotor2 = new vex::motor(smartPortLookupTable[port2], currentGear);
-  rightMotor3 = new vex::motor(smartPortLookupTable[port3], currentGear);
-  rightMotor4 = new vex::motor(smartPortLookupTable[port4], currentGear);
-  if (rightTracker != nullptr) {
-    rightTracker->setEncoderMotor(rightMotor1);
-  } else {
-    rightTracker = new SmartEncoder(rightMotor1);
-  }
-  rightDriveTracker = rightTracker->newTracker();  // creates drive tracker
-}
-
-void Drive::leftReverseSetup(bool reverse1) {  // left motor reverse setup for 2 motor drive
-  leftMotor1->setReversed(reverse1);
-}
-
-void Drive::leftReverseSetup(bool reverse1, bool reverse2) {  // left motor reverse setup for 4 motor drive
-  leftMotor1->setReversed(reverse1);
-  leftMotor2->setReversed(reverse2);
-}
-
-void Drive::leftReverseSetup(bool reverse1, bool reverse2, bool reverse3) {  // left motor reverse setup for 6 motor drive
-  leftMotor1->setReversed(reverse1);
-  leftMotor2->setReversed(reverse2);
-  leftMotor3->setReversed(reverse3);
-}
-
-void Drive::leftReverseSetup(bool reverse1, bool reverse2, bool reverse3, bool reverse4) {  // left motor reverse setup for 8 motor drive
-  leftMotor1->setReversed(reverse1);
-  leftMotor2->setReversed(reverse2);
-  leftMotor3->setReversed(reverse3);
-  leftMotor4->setReversed(reverse4);
-}
-
-void Drive::rightReverseSetup(bool reverse1) {  // right motor reverse setup for 2 motor drive
-  rightMotor1->setReversed(reverse1);
-}
-
-void Drive::rightReverseSetup(bool reverse1, bool reverse2) {  // right motor reverse setup for 4 motor drive
-  rightMotor1->setReversed(reverse1);
-  rightMotor2->setReversed(reverse2);
-}
-
-void Drive::rightReverseSetup(bool reverse1, bool reverse2, bool reverse3) {  // right motor reverse setup for 6 motor drive
-  rightMotor1->setReversed(reverse1);
-  rightMotor2->setReversed(reverse2);
-  rightMotor3->setReversed(reverse3);
-}
-
-void Drive::rightReverseSetup(bool reverse1, bool reverse2, bool reverse3, bool reverse4) {  // right motor reverse setup for 8 motor drive
-  rightMotor1->setReversed(reverse1);
-  rightMotor2->setReversed(reverse2);
-  rightMotor3->setReversed(reverse3);
-  rightMotor4->setReversed(reverse4);
 }
 
 /*----- encoder setup -----*/
