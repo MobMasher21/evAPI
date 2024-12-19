@@ -33,7 +33,7 @@ void Drive::motorSetup(int motorCount, int leftPorts[], int rightPorts[], bool l
 
   for (int i = 0; i < motorCount; i++) {
     vex::motor* newLeftMotor = new vex::motor(smartPortLookupTable[leftPorts[i]], gearSetting, leftReverse[i]);
-    vex::motor* newRightMotor = new vex::motor(smartPortLookupTable[rightPorts[i]], gearSetting, leftReverse[i]);
+    vex::motor* newRightMotor = new vex::motor(smartPortLookupTable[rightPorts[i]], gearSetting, rightReverse[i]);
     leftMotors.push_back(newLeftMotor);
     rightMotors.push_back(newRightMotor);
   }
