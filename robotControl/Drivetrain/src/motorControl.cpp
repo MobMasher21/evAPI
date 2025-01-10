@@ -14,6 +14,9 @@ void Drive::balanceMotors() {
       activeRightMotors.push_back(rightMotors[i]);
     }
   }
+
+  activeLeftMotors = leftMotors;
+  activeRightMotors = rightMotors;
 }
 
 /*----- left motors -----*/
