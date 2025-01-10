@@ -78,29 +78,33 @@ class Drive {
     /*----- motor ports and reverses -----*/
 
     /**
-     * @brief Sets up the motors for the drivebase - use templated version unless motor count is not known at compile time
-     * @param motorCount The number of motors on each side
-     * @param leftPorts Ports for the left side
-     * @param rightPorts Ports for the right side
-     * @param leftReverse Which left side motors are reversed
-     * @param rightReverse Which right side motors are reversed
-     * @param gearSetting Which gear cartridge the motors are using
+     * @brief Sets the cartage type that is used in the motors.
      */
-    void motorSetup(int motorCount, int leftPorts[], int rightPorts[], bool leftReverse[], bool rightReverse[], vex::gearSetting gearSetting);
+    void setGearbox(vex::gearSetting driveGear);
 
     /**
-     * @brief Sets up the motors for the drivebase - use templated version unless motor count is not known at compile time
-     * @tparam N The number of motors on each side
-     * @param leftPorts Ports for the left side
-     * @param rightPorts Ports for the right side
-     * @param leftReverse Which left side motors are reversed
-     * @param rightReverse Which right side motors are reversed
-     * @param gearSetting Which gear cartridge the motors are using
+     * @brief Sets ports for the left side
      */
-    template <int N>
-    void motorSetup(std::array<int, N> leftPorts, std::array<int, N> rightPorts, std::array<bool, N> leftReverse, std::array<bool, N> rightReverse, vex::gearSetting gearSetting) {
-      motorSetup(N, leftPorts.data(), rightPorts.data(), leftReverse.data(), rightReverse.data(), gearSetting);
-    }
+    template <typename... Args>
+    void leftPortSetup(int port, Args... ports) { motorPortsSetup(evAPI::leftAndRight::LEFT, sizeof...(Args), (int[]){port, ports...}); }
+
+    /**
+     * @brief Sets ports for the right side
+     */
+    template <typename... Args>
+    void rightPortSetup(int port, Args... ports) { motorPortsSetup(evAPI::leftAndRight::RIGHT, sizeof...(Args), (int[]){port, ports...}); }
+
+    /**
+     * @brief Sets reverse status for the left side
+     */
+    template <typename... Args>
+    void leftReverseSetup(bool reverse, Args... ports) { motorReverseSetup(evAPI::leftAndRight::LEFT, sizeof...(Args), (bool[]){reverse, ports...}); }
+
+    /**
+     * @brief Sets reverse status for the left side
+     */
+    template <typename... Args>
+    void rightReverseSetup(bool reverse, Args... ports) { motorReverseSetup(evAPI::leftAndRight::RIGHT, sizeof...(Args), (bool[]){reverse, ports...}); }
 
     /*----- encoder setup -----*/
 
@@ -398,6 +402,8 @@ class Drive {
     /************ motors ************/
 
     void balanceMotors();  // checks if a motor is unplugged and disables the corrsponding motor to balance
+    void motorPortsSetup(evAPI::leftAndRight side, int motorCount, int ports[]);
+    void motorReverseSetup(evAPI::leftAndRight side, int motorCount, bool reverse[]);
 
     /*----- left motors -----*/
     void spinLeftMotors(int speed);             // spins all motors on the left side
@@ -434,7 +440,7 @@ class Drive {
 
     /****** motor and wheel settings ******/
     bool isDebugMode = false;  // is debug mode on
-    int motorCount;            // the number of motors on each side of drive base
+    int motorCount = -1;       // the number of motors on each side of drive base
     vex::gearSetting currentGear;
     float wheelSize;    // stores the diameter of wheel
     float gearInput;    // stores the input value of the gear ratio

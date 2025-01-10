@@ -5,15 +5,15 @@ namespace evAPI {
 /************ motors ************/
 
 void Drive::balanceMotors() {
-  // activeLeftMotors.clear();
-  // activeRightMotors.clear();
+  activeLeftMotors.clear();
+  activeRightMotors.clear();
   
-  // for (int i = 0; i < motorCount; i++) {
-  //   if (leftMotors[i]->installed() && rightMotors[i]->installed()) {
-  //     activeLeftMotors.push_back(leftMotors[i]);
-  //     activeRightMotors.push_back(rightMotors[i]);
-  //   }
-  // }
+  for (int i = 0; i < motorCount; i++) {
+    if (leftMotors[i]->installed() && rightMotors[i]->installed()) {
+      activeLeftMotors.push_back(leftMotors[i]);
+      activeRightMotors.push_back(rightMotors[i]);
+    }
+  }
 
   activeLeftMotors = leftMotors;
   activeRightMotors = rightMotors;

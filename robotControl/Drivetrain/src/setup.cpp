@@ -25,28 +25,50 @@ void Drive::setStoppingMode(vex::brakeType mode) {
   }
 }
 
-void Drive::motorSetup(int motorCount, int leftPorts[], int rightPorts[], bool leftReverse[], bool rightReverse[], vex::gearSetting gearSetting) {
-  leftMotors.clear();
-  rightMotors.clear();
+void Drive::motorPortsSetup(evAPI::leftAndRight side, int motorCount, int ports[]) {
+  std::vector<vex::motor*>& motorVec = side == evAPI::leftAndRight::LEFT ? leftMotors : rightMotors;
+  motorVec.clear();
 
+  if ((this->motorCount != -1) && (this->motorCount != motorCount)) {
+    printf("WARNING: left and right motor counts don't match\n");
+  }
+  
   this->motorCount = motorCount;
 
   for (int i = 0; i < motorCount; i++) {
-    vex::motor* newLeftMotor = new vex::motor(smartPortLookupTable[leftPorts[i]], gearSetting, leftReverse[i]);
-    vex::motor* newRightMotor = new vex::motor(smartPortLookupTable[rightPorts[i]], gearSetting, rightReverse[i]);
-    leftMotors.push_back(newLeftMotor);
-    rightMotors.push_back(newRightMotor);
+    vex::motor* motor = new vex::motor(smartPortLookupTable[ports[i]], currentGear);
+    motorVec.push_back(motor);
   }
-
-  activeLeftMotors = leftMotors;
-  activeRightMotors = rightMotors;
-
-  if (leftTracker != nullptr) {
-    leftTracker->setEncoderMotor(leftMotors[0]);
-  } else {
-    leftTracker = new SmartEncoder(leftMotors[0]);
+  
+  if (side == evAPI::leftAndRight::LEFT)
+  {
+    if (leftTracker != nullptr) {
+      leftTracker->setEncoderMotor(leftMotors[0]);
+    } else {
+      leftTracker = new SmartEncoder(leftMotors[0]);
+    }
+    leftDriveTracker = leftTracker->newTracker();
+  } else if (side == evAPI::leftAndRight::RIGHT) {
+    if (rightTracker != nullptr) {
+      rightTracker->setEncoderMotor(rightMotors[0]);
+    } else {
+      rightTracker = new SmartEncoder(rightMotors[0]);
+    }
+    rightDriveTracker = rightTracker->newTracker();
   }
-  leftDriveTracker = leftTracker->newTracker();  // creates drive tracker
+}
+
+void Drive::motorReverseSetup(evAPI::leftAndRight side, int motorCount, bool reverse[]) {
+  std::vector<vex::motor*>& motorVec = side == evAPI::leftAndRight::LEFT ? leftMotors : rightMotors;
+
+  if (motorVec.size() != motorCount) {
+    printf("ERROR: reverse count doesn't match the number of motors");
+    return;
+  }
+  
+  for (int i = 0; i < motorCount; i++) {
+    motorVec[i]->setReversed(reverse[i]);
+  }
 }
 
 /*----- encoder setup -----*/
