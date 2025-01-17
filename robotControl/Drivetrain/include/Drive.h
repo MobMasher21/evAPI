@@ -78,33 +78,40 @@ class Drive {
     /*----- motor ports and reverses -----*/
 
     /**
-     * @brief Sets the cartage type that is used in the motors.
-     */
-    void setGearbox(vex::gearSetting driveGear);
-
-    /**
      * @brief Sets ports for the left side
      */
     template <typename... Args>
-    void leftPortSetup(int port, Args... ports) { motorPortsSetup(evAPI::leftAndRight::LEFT, sizeof...(Args), (int[]){port, ports...}); }
+    void leftPortSetup(int port, Args... ports) {
+      int portArray[sizeof...(Args) + 1] = {port, ports...};
+      motorPortsSetup(evAPI::leftAndRight::LEFT, sizeof...(Args) + 1, portArray);
+    }
 
     /**
      * @brief Sets ports for the right side
      */
     template <typename... Args>
-    void rightPortSetup(int port, Args... ports) { motorPortsSetup(evAPI::leftAndRight::RIGHT, sizeof...(Args), (int[]){port, ports...}); }
+    void rightPortSetup(int port, Args... ports) {
+      int portArray[sizeof...(Args) + 1] = {port, ports...};
+      motorPortsSetup(evAPI::leftAndRight::RIGHT, sizeof...(Args) + 1, portArray);
+    }
 
     /**
      * @brief Sets reverse status for the left side
      */
     template <typename... Args>
-    void leftReverseSetup(bool reverse, Args... ports) { motorReverseSetup(evAPI::leftAndRight::LEFT, sizeof...(Args), (bool[]){reverse, ports...}); }
+    void leftReverseSetup(bool reverse, Args... reverses) {
+      bool reverseArray[sizeof...(Args) + 1] = {reverse, reverses...};
+      motorReverseSetup(evAPI::leftAndRight::LEFT, sizeof...(Args) + 1, reverseArray);
+    }
 
     /**
      * @brief Sets reverse status for the left side
      */
     template <typename... Args>
-    void rightReverseSetup(bool reverse, Args... ports) { motorReverseSetup(evAPI::leftAndRight::RIGHT, sizeof...(Args), (bool[]){reverse, ports...}); }
+    void rightReverseSetup(bool reverse, Args... reverses) {
+      bool reverseArray[sizeof...(Args) + 1] = {reverse, reverses...};
+      motorReverseSetup(evAPI::leftAndRight::RIGHT, sizeof...(Args) + 1, reverseArray);
+    }
 
     /*----- encoder setup -----*/
 
