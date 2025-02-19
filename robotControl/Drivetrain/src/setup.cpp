@@ -103,7 +103,8 @@ void Drive::backEncoderSetup(int port, double wheelSize, bool reverse) {  // set
 }
 
 /*----- pid setup -----*/
-void Drive::setupDrivePID(double kp, double ki, double kd, int minStopError, int timeToStop, int timeoutTime) {
+void Drive::setupDrivePID(double kp, double ki, double kd, int startI, int minStopError, int timeToStop, int timeoutTime) {
+  drivePID.setStarti(startI);
   drivePID.setConstants(kp, ki, kd);
   drivePID.setStoppings(minStopError, timeToStop, timeoutTime);
   driveP = kp;
@@ -113,7 +114,12 @@ void Drive::setupDrivePID(double kp, double ki, double kd, int minStopError, int
   driveTimeToStop = timeToStop;
 }
 
-void Drive::setupTurnPID(double kp, double ki, double kd, int minStopError, int timeToStop, int timeoutTime) {
+void Drive::setupDrivePID(double kp, double ki, double kd, int minStopError, int timeToStop, int timeoutTime) {
+  setupDrivePID(kp, ki, kd, -1, timeToStop, timeoutTime);
+}
+
+void Drive::setupTurnPID(double kp, double ki, double kd, int startI, int minStopError, int timeToStop, int timeoutTime) {
+  drivePID.setStarti(startI);
   turnPID.setConstants(kp, ki, kd);
   turnPID.setStoppings(minStopError, timeToStop, timeoutTime);
   turnP = kp;
@@ -123,7 +129,12 @@ void Drive::setupTurnPID(double kp, double ki, double kd, int minStopError, int 
   turnTimeToStop = timeToStop;
 }
 
-void Drive::setupDriftPID(double kp, double ki, double kd, int minStopError, int timeToStop, int timeoutTime) {
+void Drive::setupTurnPID(double kp, double ki, double kd, int minStopError, int timeToStop, int timeoutTime) {
+  setupTurnPID(kp, ki, kd, -1, timeToStop, timeoutTime);
+}
+
+void Drive::setupDriftPID(double kp, double ki, double kd, int startI, int minStopError, int timeToStop, int timeoutTime) {
+  drivePID.setStarti(startI);
   driftPID.setConstants(kp, ki, kd);
   driftPID.setStoppings(minStopError, timeToStop, timeoutTime);
   driftP = kp;
@@ -133,7 +144,12 @@ void Drive::setupDriftPID(double kp, double ki, double kd, int minStopError, int
   driftTimeToStop = timeToStop;
 }
 
-void Drive::setupArcPID(double kp, double ki, double kd, int minStopError, int timeToStop, int timeoutTime) {
+void Drive::setupDriftPID(double kp, double ki, double kd, int minStopError, int timeToStop, int timeoutTime) {
+  setupDriftPID(kp, ki, kd, -1, timeToStop, timeoutTime);
+}
+
+void Drive::setupArcPID(double kp, double ki, double kd, int startI, int minStopError, int timeToStop, int timeoutTime) {
+  drivePID.setStarti(startI);
   arcPID.setConstants(kp, ki, kd);
   arcPID.setStoppings(minStopError, timeToStop, timeoutTime);
   arcP = kp;
@@ -143,7 +159,12 @@ void Drive::setupArcPID(double kp, double ki, double kd, int minStopError, int t
   arcTimeToStop = timeToStop;
 }
 
-void Drive::setupArcDriftPID(double kp, double ki, double kd, int minStopError, int timeToStop, int timeoutTime) {
+void Drive::setupArcPID(double kp, double ki, double kd, int minStopError, int timeToStop, int timeoutTime) {
+  setupArcPID(kp, ki, kd, -1, timeToStop, timeoutTime);
+}
+
+void Drive::setupArcDriftPID(double kp, double ki, double kd, int startI, int minStopError, int timeToStop, int timeoutTime) {
+  drivePID.setStarti(startI);
   arcDriftPID.setConstants(kp, ki, kd);
   arcDriftPID.setStoppings(minStopError, timeToStop, timeoutTime);
   arcDriftP = kp;
@@ -151,6 +172,10 @@ void Drive::setupArcDriftPID(double kp, double ki, double kd, int minStopError, 
   arcDriftD = kd;
   arcDriftMaxStopError = minStopError;
   arcDriftTimeToStop = timeToStop;
+}
+
+void Drive::setupArcDriftPID(double kp, double ki, double kd, int minStopError, int timeToStop, int timeoutTime) {
+  setupArcDriftPID(kp, ki, kd, -1, timeToStop, timeoutTime);
 }
 
 /*----- inertial setup -----*/

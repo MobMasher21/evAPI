@@ -29,7 +29,63 @@
 #define DRIVE_TRACKER 0
 #define ODO_TRACKER   1
 
+
 namespace evAPI {
+
+struct DriveInfo {
+  // mutable values
+  int *desiredValue;
+  int *error;
+  int *desiredSpeed;
+  int *moveSpeed;
+  int *driftPower;
+
+  // immutable values
+  double leftPosition;
+  double rightPosition;
+  int averagePosition;
+
+  // flags
+  bool *stop; // breaks out of the PID loop and stops the base
+  bool *abort; // immediately returns from the drive command without stopping the base
+};
+using DriveCallback = void(*)(DriveInfo);
+using DriveCallbackUserData = void(*)(DriveInfo, void*);
+
+struct TurnInfo {
+  // mutable values
+  int *desiredValue;
+  int *error;
+  int *desiredSpeed;
+  int *moveSpeed;
+
+  // flags
+  bool *stop; // breaks out of the PID loop and stops the base
+  bool *abort; // immediately returns from the drive command without stopping the base
+};
+using TurnCallback = void(*)(TurnInfo);
+using TurnCallbackUserData = void(*)(TurnInfo, void*);
+
+struct ArcInfo {
+  // mutable values
+  int *desiredValue;
+  int *error;
+  int *desiredSpeed;
+  int *moveSpeed;
+  int *driftPower;
+
+  // immutable values
+  double leftPosition;
+  double rightPosition;
+  int averagePosition;
+
+  // flags
+  bool *stop; // breaks out of the PID loop and stops the base
+  bool *abort; // immediately returns from the drive command without stopping the base
+};
+using ArcCallback = void(*)(ArcInfo);
+using ArcCallbackUserData = void(*)(ArcInfo, void*);
+
 class Drive {
   public:
     /****** constructors ******/
@@ -157,12 +213,38 @@ class Drive {
      * @param kp The proportional value for the PID.
      * @param ki The integral value for the PID.
      * @param kd The derivative value for the PID.
+     * @param startI The startI value for the PID
+     * @param minStopError The minimum error required for the PID to finish.
+     * @param timeToStop The amount of cycles the PID needs to run for with the error being less than
+     *                   minStopError for the PID to finish.
+     * @param timeoutTime The amount of cycles the PID needs to take before it times out and exits.
+     */
+    void setupDrivePID(double kp, double ki, double kd, int startI, int minStopError, int timeToStop, int timeoutTime);
+
+    /**
+     * @brief Sets up the PID controller for driving straight.
+     * @param kp The proportional value for the PID.
+     * @param ki The integral value for the PID.
+     * @param kd The derivative value for the PID.
      * @param minStopError The minimum error required for the PID to finish.
      * @param timeToStop The amount of cycles the PID needs to run for with the error being less than
      *                   minStopError for the PID to finish.
      * @param timeoutTime The amount of cycles the PID needs to take before it times out and exits.
      */
     void setupDrivePID(double kp, double ki, double kd, int minStopError, int timeToStop, int timeoutTime);
+
+    /**
+     * @brief Sets up the PID controller for point turning.
+     * @param kp The proportional value for the PID.
+     * @param ki The integral value for the PID.
+     * @param kd The derivative value for the PID.
+     * @param startI The startI value for the PID
+     * @param minStopError The minimum error required for the PID to finish.
+     * @param timeToStop The amount of cycles the PID needs to run for with the error being less than
+     *                   minStopError for the PID to finish.
+     * @param timeoutTime The amount of cycles the PID needs to take before it times out and exits.
+     */
+    void setupTurnPID(double kp, double ki, double kd, int startI, int minStopError, int timeToStop, int timeoutTime);
 
     /**
      * @brief Sets up the PID controller for point turning.
@@ -181,6 +263,19 @@ class Drive {
      * @param kp The proportional value for the PID.
      * @param ki The integral value for the PID.
      * @param kd The derivative value for the PID.
+     * @param startI The startI value for the PID
+     * @param minStopError The minimum error required for the PID to finish.
+     * @param timeToStop The amount of cycles the PID needs to run for with the error being less than
+     *                   minStopError for the PID to finish.
+     * @param timeoutTime The amount of cycles the PID needs to take before it times out and exits.
+     */
+    void setupDriftPID(double kp, double ki, double kd, int startI, int minStopError, int timeToStop, int timeoutTime);
+
+    /**
+     * @brief Sets up the PID controller for drift control when driving straight.
+     * @param kp The proportional value for the PID.
+     * @param ki The integral value for the PID.
+     * @param kd The derivative value for the PID.
      * @param minStopError The minimum error required for the PID to finish.
      * @param timeToStop The amount of cycles the PID needs to run for with the error being less than
      *                   minStopError for the PID to finish.
@@ -193,12 +288,38 @@ class Drive {
      * @param kp The proportional value for the PID.
      * @param ki The integral value for the PID.
      * @param kd The derivative value for the PID.
+     * @param startI The startI value for the PID
+     * @param minStopError The minimum error required for the PID to finish.
+     * @param timeToStop The amount of cycles the PID needs to run for with the error being less than
+     *                   minStopError for the PID to finish.
+     * @param timeoutTime The amount of cycles the PID needs to take before it times out and exits.
+     */
+    void setupArcPID(double kp, double ki, double kd, int startI, int minStopError, int timeToStop, int timeoutTime);
+
+    /**
+     * @brief Sets up the PID controller for arc turning.
+     * @param kp The proportional value for the PID.
+     * @param ki The integral value for the PID.
+     * @param kd The derivative value for the PID.
      * @param minStopError The minimum error required for the PID to finish.
      * @param timeToStop The amount of cycles the PID needs to run for with the error being less than
      *                   minStopError for the PID to finish.
      * @param timeoutTime The amount of cycles the PID needs to take before it times out and exits.
      */
     void setupArcPID(double kp, double ki, double kd, int minStopError, int timeToStop, int timeoutTime);
+
+    /**
+     * @brief Sets up the PID controller for drift control when arc turning.
+     * @param kp The proportional value for the PID.
+     * @param ki The integral value for the PID.
+     * @param kd The derivative value for the PID.
+     * @param startI The startI value for the PID
+     * @param minStopError The minimum error required for the PID to finish.
+     * @param timeToStop The amount of cycles the PID needs to run for with the error being less than
+     *                   minStopError for the PID to finish.
+     * @param timeoutTime The amount of cycles the PID needs to take before it times out and exits.
+     */
+    void setupArcDriftPID(double kp, double ki, double kd, int startI, int minStopError, int timeToStop, int timeoutTime);
 
     /**
      * @brief Sets up the PID controller for drift control when arc turning.
@@ -291,7 +412,33 @@ class Drive {
      * @param distance The distance to drive in inches.
      * @param speed Optional. The top speed to drive at.
      */
+    void driveForward(double distance, int speed, DriveCallbackUserData callback, void* userdata);
+    
+    /**
+     * @brief Drives the robot forward.
+     * @param distance The distance to drive in inches.
+     * @param speed Optional. The top speed to drive at.
+     */
+    void driveForward(double distance, int speed, DriveCallback callback);
+
+    /**
+     * @brief Drives the robot forward.
+     * @param distance The distance to drive in inches.
+     * @param speed Optional. The top speed to drive at.
+     */
     void driveForward(double distance, int speed);
+
+    /**
+     * @brief Drives the robot forward.
+     * @param distance The distance to drive in inches.
+     */
+    void driveForward(double distance, DriveCallbackUserData callback, void* userdata);
+
+    /**
+     * @brief Drives the robot forward.
+     * @param distance The distance to drive in inches.
+     */
+    void driveForward(double distance, DriveCallback callback);
 
     /**
      * @brief Drives the robot forward.

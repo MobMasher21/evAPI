@@ -58,7 +58,7 @@ void Drive::setDriveBaseWidth(double width) {  // sets the distance between the 
   driveBaseWidth = width;
 }
 
-void Drive::driveForward(double distance, int speed) {  // enter a distance and speed to go forward
+void Drive::driveForward(double distance, int speed, DriveCallbackUserData callback, void* userdata) {  // enter a distance and speed to go forward
   //*setup of all variables*
   double leftPosition;       // angle of left encoder
   double rightPosition;      // angle of right encoder
@@ -109,6 +109,28 @@ void Drive::driveForward(double distance, int speed) {  // enter a distance and 
     if (moveSpeed > speed) moveSpeed = speed;
     if (moveSpeed < -speed) moveSpeed = -speed;
 
+    // Populate struct that will be passed to the user callback
+    bool stop = false;
+    bool abort = false;
+    auto info = DriveInfo{
+        &desiredValue,
+        &error,
+        &speed,
+        &moveSpeed,
+        &driftPower,
+        leftPosition,
+        rightPosition,
+        averagePosition,
+        &stop,
+        &abort};
+
+    if (callback != nullptr) {
+      callback(info, userdata);
+    }
+
+    if (stop) break;
+    if (abort) return;
+
     //*setting motor speeds*
     spinBase(moveSpeed - driftPower, moveSpeed + driftPower);
 
@@ -128,6 +150,27 @@ void Drive::driveForward(double distance, int speed) {  // enter a distance and 
     vex::task::sleep(20);
   }
   stopRobot(vex::brakeType::brake);
+}
+
+void Drive::driveForward(double distance, int speed, DriveCallback callback) {
+  if (callback != nullptr) {
+    auto wrapper = [](DriveInfo info, void* userdata) { ((DriveCallback)userdata)(info); };
+    driveForward(distance, speed, wrapper, (void*)callback);
+  } else {
+    driveForward(distance, speed, nullptr, nullptr);
+  }
+}
+
+void Drive::driveForward(double distance, int speed) {
+  driveForward(distance, speed, nullptr);
+}
+
+void Drive::driveForward(double distance, DriveCallbackUserData callback, void* userdata) {  // enter a distance to go forward
+  driveForward(distance, driveSpeed, callback, userdata);
+}
+
+void Drive::driveForward(double distance, DriveCallback callback) {  // enter a distance to go forward
+  driveForward(distance, driveSpeed, callback);
 }
 
 void Drive::driveForward(double distance) {  // enter a distance to go forward
@@ -178,7 +221,7 @@ void Drive::turnToHeading(int angle, int speed) {  // enter an angle and speed t
     //*speed cap
     if (moveSpeed > speed) moveSpeed = speed;
     if (moveSpeed < -speed) moveSpeed = -speed;
-
+    
     //*setting motor speeds*
     if (turnDirection == LEFT) {
       spinBase(-moveSpeed, moveSpeed);
