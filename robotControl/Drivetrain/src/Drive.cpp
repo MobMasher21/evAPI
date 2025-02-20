@@ -185,7 +185,7 @@ void Drive::driveBackward(double distance) {  // enter a distance to go backward
   driveForward(-distance, driveSpeed);
 }
 
-void Drive::turnToHeading(int angle, int speed) {  // enter an angle and speed to turn
+void Drive::turnToHeading(int angle, int speed, TurnCallbackUserData callback, void* userdata) {  // enter an angle and speed to turn
   //*setup of all variables*
   leftAndRight turnDirection;
   int currentHeading;
@@ -222,6 +222,24 @@ void Drive::turnToHeading(int angle, int speed) {  // enter an angle and speed t
     if (moveSpeed > speed) moveSpeed = speed;
     if (moveSpeed < -speed) moveSpeed = -speed;
     
+    // Populate struct that will be passed to the user callback
+    bool stop = false;
+    bool abort = false;
+    auto info = TurnInfo{
+        &desiredValue,
+        &error,
+        &speed,
+        &moveSpeed,
+        &stop,
+        &abort};
+
+    if (callback != nullptr) {
+      callback(info, userdata);
+    }
+
+    if (stop) break;
+    if (abort) return;
+
     //*setting motor speeds*
     if (turnDirection == LEFT) {
       spinBase(-moveSpeed, moveSpeed);
@@ -245,6 +263,27 @@ void Drive::turnToHeading(int angle, int speed) {  // enter an angle and speed t
   }
 
   stopRobot(vex::brakeType::brake);
+}
+
+void Drive::turnToHeading(int angle, int speed, TurnCallback callback) {
+  if (callback != nullptr) {
+    auto wrapper = [](TurnInfo info, void* userdata) { ((TurnCallback)userdata)(info); };
+    turnToHeading(angle, speed, wrapper, (void*)callback);
+  } else {
+    turnToHeading(angle, speed, nullptr, nullptr);
+  }
+}
+
+void Drive::turnToHeading(int angle, int speed) {
+  turnToHeading(angle, speed, nullptr);
+}
+
+void Drive::turnToHeading(int angle, TurnCallbackUserData callback, void* userdata) {
+  turnToHeading(angle, turnSpeed, callback, userdata);
+}
+
+void Drive::turnToHeading(int angle, TurnCallback callback) {
+  turnToHeading(angle, turnSpeed, callback);
 }
 
 void Drive::turnToHeading(int angle) {  // enter an angle to turn

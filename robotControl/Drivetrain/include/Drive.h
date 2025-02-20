@@ -464,7 +464,33 @@ class Drive {
      * @param angle The heading to turn to in degrees.
      * @param speed Optional. The top speed to turn at.
      */
+    void turnToHeading(int angle, int speed, TurnCallbackUserData callback, void* userdata);
+
+    /**
+     * @brief Turns the robot to a specified heading.
+     * @param angle The heading to turn to in degrees.
+     * @param speed Optional. The top speed to turn at.
+     */
+    void turnToHeading(int angle, int speed, TurnCallback callback);
+
+    /**
+     * @brief Turns the robot to a specified heading.
+     * @param angle The heading to turn to in degrees.
+     * @param speed Optional. The top speed to turn at.
+     */
     void turnToHeading(int angle, int speed);
+
+    /**
+     * @brief Turns the robot to a specified heading.
+     * @param angle The heading to turn to in degrees.
+     */
+    void turnToHeading(int angle, TurnCallbackUserData callback, void* userdata);
+
+    /**
+     * @brief Turns the robot to a specified heading.
+     * @param angle The heading to turn to in degrees.
+     */
+    void turnToHeading(int angle, TurnCallback callback);
 
     /**
      * @brief Turns the robot to a specified heading.
