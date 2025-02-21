@@ -92,7 +92,7 @@ double PID::compute(double error) {
   double output;
 
   // adds the error to the accumulator if it is large enough
-  if (fabs(error) < starti || starti == -1) {
+  if (fabs(error) < starti || static_cast<int>(starti) == -1) {
     accumulatedError += error;
   }
 

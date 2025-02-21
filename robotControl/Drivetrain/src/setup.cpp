@@ -115,7 +115,7 @@ void Drive::setupDrivePID(double kp, double ki, double kd, int startI, int minSt
 }
 
 void Drive::setupDrivePID(double kp, double ki, double kd, int minStopError, int timeToStop, int timeoutTime) {
-  setupDrivePID(kp, ki, kd, -1, timeToStop, timeoutTime);
+  setupDrivePID(kp, ki, kd, -1, minStopError, timeToStop, timeoutTime);
 }
 
 void Drive::setupTurnPID(double kp, double ki, double kd, int startI, int minStopError, int timeToStop, int timeoutTime) {
