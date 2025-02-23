@@ -527,10 +527,10 @@ int Drive::turnError(leftAndRight direction, int startAngle, int endAngle) {
 }
 
 vex::motor* Drive::getLeftMotor(int index) {
-  return leftMotors[index];
+  return index < leftMotors.size() ? leftMotors[index] : nullptr;
 }
 
 vex::motor* Drive::getRightMotor(int index) {
-  return rightMotors[index];
+  return index < rightMotors.size() ? rightMotors[index] : nullptr;
 }
 }  // namespace evAPI
