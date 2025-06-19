@@ -130,7 +130,7 @@ void Drive::setupTurnPID(double kp, double ki, double kd, int startI, int minSto
 }
 
 void Drive::setupTurnPID(double kp, double ki, double kd, int minStopError, int timeToStop, int timeoutTime) {
-  setupTurnPID(kp, ki, kd, -1, timeToStop, timeoutTime);
+  setupTurnPID(kp, ki, kd, -1, minStopError, timeToStop, timeoutTime);
 }
 
 void Drive::setupDriftPID(double kp, double ki, double kd, int startI, int minStopError, int timeToStop, int timeoutTime) {
@@ -145,7 +145,7 @@ void Drive::setupDriftPID(double kp, double ki, double kd, int startI, int minSt
 }
 
 void Drive::setupDriftPID(double kp, double ki, double kd, int minStopError, int timeToStop, int timeoutTime) {
-  setupDriftPID(kp, ki, kd, -1, timeToStop, timeoutTime);
+  setupDriftPID(kp, ki, kd, -1, minStopError, timeToStop, timeoutTime);
 }
 
 void Drive::setupArcPID(double kp, double ki, double kd, int startI, int minStopError, int timeToStop, int timeoutTime) {
@@ -160,7 +160,7 @@ void Drive::setupArcPID(double kp, double ki, double kd, int startI, int minStop
 }
 
 void Drive::setupArcPID(double kp, double ki, double kd, int minStopError, int timeToStop, int timeoutTime) {
-  setupArcPID(kp, ki, kd, -1, timeToStop, timeoutTime);
+  setupArcPID(kp, ki, kd, -1, minStopError, timeToStop, timeoutTime);
 }
 
 void Drive::setupArcDriftPID(double kp, double ki, double kd, int startI, int minStopError, int timeToStop, int timeoutTime) {
@@ -175,7 +175,7 @@ void Drive::setupArcDriftPID(double kp, double ki, double kd, int startI, int mi
 }
 
 void Drive::setupArcDriftPID(double kp, double ki, double kd, int minStopError, int timeToStop, int timeoutTime) {
-  setupArcDriftPID(kp, ki, kd, -1, timeToStop, timeoutTime);
+  setupArcDriftPID(kp, ki, kd, -1, minStopError, timeToStop, timeoutTime);
 }
 
 /*----- inertial setup -----*/
