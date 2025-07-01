@@ -1,4 +1,5 @@
 #include "evAPI/odometry/OdoMath.h"
+#include <math.h>
 
 namespace evAPI {
 
@@ -19,23 +20,46 @@ void OdoMath::setInitialPosition(double x, double y, double theta) {
  * @param backDist Current total distance traveled by the back wheel in inches.
  */
 void OdoMath::update(double leftDist, double rightDist, double backDist) {
-  double dLeft = leftDist - prevLeftDist;
-  double dRight = rightDist - prevRightDist;
-  double dBack = backDist - prevBackDist;
+  double s_l = leftDist - prevLeftDist;
+  double s_r = rightDist - prevRightDist;
+  double s_b = backDist - prevBackDist;
 
-  prevLeftDist = leftDist;
-  prevRightDist = rightDist;
-  prevBackDist = backDist;
+  this->prevLeftDist = leftDist;
+  this->prevRightDist = rightDist;
+  this->prevBackDist = backDist;
 
-  double dTheta = (dRight - dLeft) / trackWidth;
-  double dCenter = (dLeft + dRight) / 2;
-  currentPosition.theta += dTheta * (180.0 / M_PI);  // Convert radians to degrees
+  double r_h = this->trackWidth;
+  // double r_v = this-> ;
 
-  currentPosition.x += dCenter * cos(currentPosition.theta * M_PI / 180.0) - dBack * sin(currentPosition.theta * M_PI / 180.0);
-  currentPosition.y += dCenter * sin(currentPosition.theta * M_PI / 180.0) + dBack * cos(currentPosition.theta * M_PI / 180.0);
+  // s_l == s_r a divide by zero will occur
+  if (s_l != s_r) {
+    // The change in the robots angle
+    double theta = (s_r - s_l) / (2 * r_h);
+    // The arc length of the movement
+    double r_t = (r_h * (s_r + s_l)) / (s_r - s_l);
+    
+    // Change in x
+    double x_1 = r_t * (cos(theta) - 1);
+    // Change in y
+    double y_1 = r_t * (sin(theta));
+    
+    // The previous calculations are preformed relative to the robot's orientation at the begining of the movement
+    // A rotation by the previous orientation will bring the values into world space relative to the robots starting orientation
+    double prev_theta = this->currentPosition.theta;
+    double x = x_1 * cos(prev_theta) - y_1 * sin(prev_theta);
+    double y = x_1 * sin(prev_theta) + y_1 * cos(prev_theta);
+    
+    this->currentPosition.x += x;
+    this->currentPosition.y += y;
+    this->currentPosition.theta += theta;
+
+    printf("x: %f, y: %f, theta: %f\n\n", this->currentPosition.x, this->currentPosition.y, this->currentPosition.theta * 180 / M_PI);
+  }
+  
+
 
   // Debugging outputs to monitor the changes
-  //printf("Delta Left: %f, Delta Right: %f, Delta Back: %f\n", dLeft, dRight, dBack);
+  // printf("Delta Left: %f, Delta Right: %f, Delta Back: %f\n", dLeft, dRight, dBack);
   //printf("Theta Change: %f degrees, X Change: %f inches, Y Change: %f inches\n", dTheta * (180.0 / M_PI), currentPosition.x, currentPosition.y);
 }
 

@@ -39,7 +39,7 @@ void Drive::startOdoThread() {  // starts the odo tracking thread
 void hiddenOdoThreadFunction() {  // function for odo thread
   while (1) {
     threadReference->odoThreadFunction();
-    vex::this_thread::sleep_for(20);
+    vex::this_thread::sleep_for(1);
   }
 }
 }  // namespace evAPI
