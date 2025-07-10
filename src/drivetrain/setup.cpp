@@ -183,8 +183,12 @@ void Drive::setupInertialSensor(int port) {  // sets the port of the inertial se
   turnSensor = new vex::inertial(smartPortLookupTable[port]);
 }
 
+void Drive::setupGpsAsIntertial(int port) {
+  turnSensor = new vex::gps(smartPortLookupTable[port]);
+}
+
 void Drive::calibrateInertial() {  // calibrate the inertial sensor
-  turnSensor->calibrate();
+  turnSensor->calibrate(0);
 }
 
 bool Drive::isInertialCalibrating() {  // is the inertial sensor calibrating
