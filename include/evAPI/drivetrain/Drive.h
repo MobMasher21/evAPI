@@ -618,7 +618,7 @@ class Drive {
     double backEncoderDegsPerInch;   // degrees per inch of wheel on back encoder
 
     /****** inertial sensor ******/
-    vex::guido* turnSensor;  // pointer to the inertial sensor
+    vex::inertial* turnSensor;  // pointer to the inertial sensor
 
     /****** motor and wheel settings ******/
     bool isDebugMode = false;  // is debug mode on

@@ -53,7 +53,7 @@ void OdoMath::update(double leftDist, double rightDist, double backDist) {
     this->currentPosition.y += y;
     this->currentPosition.theta += theta;
 
-    printf("x: %f, y: %f, theta: %f\n\n", this->currentPosition.x, this->currentPosition.y, this->currentPosition.theta * 180 / M_PI);
+    // printf("x: %f, y: %f, theta: %f\n\n", this->currentPosition.x, this->currentPosition.y, this->currentPosition.theta * 180 / M_PI);
   }
   
 
